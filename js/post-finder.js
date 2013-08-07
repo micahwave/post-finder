@@ -1,6 +1,6 @@
 var PostFinder = window.PostFinder || [];
 
-jQuery(document).ready(function($) {
+(function($) {
 	
 	PostFinder = {
 	
@@ -17,6 +17,23 @@ jQuery(document).ready(function($) {
 		init : function() {
 			
 			var t = this;
+
+			console.log('pf init');
+
+			$('.pf-list ul').sortable({
+				placeholder: 'placeholder',
+				update: function(e, ui) {
+					
+					var $self = $(this), $input = $self.parent().find('.pf-input');
+
+					//console.log( $(this).parent().find('.pf-input').val() );
+
+					//
+
+					t.serialize( $self, $input );
+			
+				}
+			});
 	
 			t.setup();
 			
@@ -117,15 +134,19 @@ jQuery(document).ready(function($) {
 			});
 		},
 		
-		serialize : function( obj ) {
+		serialize : function( $el, $input ) {
+
 			var ids = [];
-			$('.pf-item', obj).each(function() {
+
+			$('li', $el).each(function() {
 				ids.push( $(this).attr('data-id') );
 			});
-			$('.pf-input-'+obj.attr('data-pf')).val( ids.join(',') );
+
+			$input.val( ids.join(',') );
 		}
 		
 	}
 
 	PostFinder.init();
-});
+
+})(jQuery);

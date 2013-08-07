@@ -1,0 +1,176 @@
+/* line 1, ../sass/screen.scss */
+.pf-list {
+  max-width: 400px;
+}
+/* line 5, ../sass/screen.scss */
+.pf-list li {
+  border: 1px solid #ccc;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  margin-bottom: 1em;
+  background: #fff;
+  list-style: none;
+  cursor: move;
+}
+/* line 14, ../sass/screen.scss */
+.pf-list li nav {
+  float: right;
+}
+/* line 19, ../sass/screen.scss */
+.pf-list .placeholder {
+  padding: 1em 0.5em;
+  border-radius: 0.5em;
+  border: 1px dashed #666;
+  background: none;
+}
+
+/* line 28, ../sass/screen.scss */
+.pf-posts {
+  background: #eee;
+  padding: 1em;
+  margin: 0.5em 0 1em 0;
+  border-radius: 0.5em;
+  border: 1px solid #ddd;
+}
+
+/* line 36, ../sass/screen.scss */
+#pf-overlay {
+  display: none;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9;
+}
+
+/* line 47, ../sass/screen.scss */
+#pf-modal {
+  display: none;
+  width: 420px;
+  height: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -210px;
+  margin-top: -200px;
+  z-index: 15;
+  background: #fff;
+  border-radius: 1em;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 1em;
+}
+/* line 62, ../sass/screen.scss */
+#pf-modal .close {
+  font-weight: bold;
+  text-transform: uppercase;
+  float: right;
+  margin: 0 5px 0 0;
+  color: #000;
+  opacity: 0.4;
+  cursor: pointer;
+  display: block;
+  font-family: "Helvetica Neue", Helvetica, Arial;
+  text-shadow: 0 1px 0 #fff;
+  font-size: 12px;
+  line-height: 18px;
+}
+/* line 76, ../sass/screen.scss */
+#pf-modal .close:hover {
+  opacity: 0.2;
+}
+
+/* line 85, ../sass/screen.scss */
+#pf-modal .remove {
+  display: none;
+}
+
+/* line 88, ../sass/screen.scss */
+.pf-posts .add {
+  display: none;
+}
+
+/* line 93, ../sass/screen.scss */
+.tabs {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  margin-bottom: -1px;
+}
+
+/* line 100, ../sass/screen.scss */
+.tabs li {
+  float: left;
+  margin: 0;
+  margin-right: 0.5em;
+}
+
+/* line 106, ../sass/screen.scss */
+.tabs li a {
+  padding: 0.5em 1em;
+  border: 1px solid #ddd;
+  background-color: #f1f1f1;
+  background-image: -moz-linear-gradient(-90deg, #f9f9f9, #ececec);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f9f9f9), to(#ececec));
+  background-image: linear-gradient(top, #f9f9f9, #ececec);
+  text-decoration: none;
+  border-radius: 0.5em 0.5em 0 0;
+  color: #999;
+  display: block;
+  font-weight: bold;
+  float: left;
+  text-shadow: #fff 0 1px 1px;
+}
+
+/* line 122, ../sass/screen.scss */
+.tabs li a:hover {
+  color: #666;
+}
+
+/* line 126, ../sass/screen.scss */
+.tabs li a.selected {
+  background: #fff;
+  border-bottom: 1px solid #fff;
+  margin-bottom: -1px;
+  color: #464646;
+}
+
+/* line 133, ../sass/screen.scss */
+.tab-content {
+  padding: 1em;
+  border: 1px solid #ddd;
+  clear: both;
+  max-height: 330px;
+  overflow-y: scroll;
+}
+
+/* line 141, ../sass/screen.scss */
+.post-finder .panel {
+  display: none;
+}
+
+/* line 145, ../sass/screen.scss */
+.post-finder .panel.selected {
+  display: block;
+}
+
+/* line 149, ../sass/screen.scss */
+#pf-modal .query {
+  width: auto;
+  min-width: 70%;
+  margin-right: 1em;
+}
+
+/* line 155, ../sass/screen.scss */
+.search-panel .spinner {
+  vertical-align: middle;
+  margin-left: 0.5em;
+  margin-top: -0.3em;
+  display: none;
+}
+
+/* line 162, ../sass/screen.scss */
+.loading .spinner {
+  display: inline-block;
+}
