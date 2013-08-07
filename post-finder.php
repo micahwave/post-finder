@@ -42,7 +42,7 @@ class Post_Finder {
 			</ul>
 			<div class="tab-content">
 				<div class="panel recent-panel">
-					<ul class="draggable">
+					<ul>
 						<?php
 						
 						$posts = get_posts( array(
@@ -51,7 +51,7 @@ class Post_Finder {
 						
 						if( $posts ) {
 							foreach( $posts as $post ) {
-								echo $this->get_post_li( $post );
+								echo $this->get_search_li( $post );
 							}
 						}
 						
@@ -96,6 +96,8 @@ class Post_Finder {
 
 		$html .= $posts ? self::build_list( $posts ) : '<p>Sorry, no posts were found.</p>';
 
+		$html .= '<input type="button" name="" value="Add Posts" class="pf-add button">';
+
 		echo '<div class="pf-list">' . $html . '</div>';
 	}
 
@@ -113,7 +115,7 @@ class Post_Finder {
 		$html .= '<ul>';
 
 		foreach( $posts as $post ) {
-			$html .= self::get_post_li( $post );
+			$html .= self::get_input_li( $post );
 		}
 
 		$html .= '</ul>';
@@ -124,13 +126,24 @@ class Post_Finder {
 	/**
 	 *
 	 */
-	public static function get_post_li( $post ) {
+	public static function get_input_li( $post ) {
 		
 		return sprintf(
 			'<li class="pf-item" data-id="%s">%s<nav><a href="%s" target="_blank" class="edit">Edit</a> | <a href="#" class="remove">Remove</a></nav></li>',
 			intval( $post->ID ),
 			get_the_title( $post->ID ),
 			get_edit_post_link( $post->ID )
+		);
+	}
+
+	/**
+	 *
+	 */
+	function get_search_li( $post ) {
+		return sprintf(
+			'<li data-id="%d">%s</li>',
+			intval( $post->ID ),
+			get_the_title( $post->ID )
 		);
 	}
 	

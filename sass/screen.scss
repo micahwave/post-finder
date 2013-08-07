@@ -1,5 +1,6 @@
 .pf-list {
 	
+	overflow: hidden;
 	max-width: 400px;
 
 	li {
@@ -24,6 +25,9 @@
 	}
 }
 
+.pf-add {
+	float: right;
+}
 
 .pf-posts {
 	background: #eee;
@@ -41,19 +45,18 @@
 	position: absolute;
 	top:0;
 	left: 0;
-	z-index: 9;
+	z-index: 90;
 }
 
 #pf-modal {
+
 	display: none;
-	width: 420px;
-	height: 400px;
+	width: 80%;
+	height: 80%;
 	position: absolute;
 	top: 50%;
-	left: 50%;
-	margin-left:-210px;
-	margin-top:-200px;
-	z-index: 15;
+	left: 10%;
+	z-index: 100;
 	background: #fff;
 	border-radius: 1em;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -76,6 +79,12 @@
 		&:hover {
 			opacity: 0.2;
 		}
+	}
+
+	li {
+		font-size: 1.25em;
+		padding: 1em 0.5em;
+		border-bottom: 1px solid #ccc;
 	}
 }
 
@@ -131,11 +140,16 @@
 }
 
 .tab-content {
-	padding: 1em;
+	/*padding: 1em;*/
 	border: 1px solid #ddd;
 	clear: both;
 	max-height: 330px;
 	overflow-y: scroll;
+
+	ul {
+		padding: 0;
+		margin: 0;
+	}
 }
 
 .post-finder .panel {

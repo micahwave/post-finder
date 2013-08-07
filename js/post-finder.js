@@ -34,6 +34,15 @@ var PostFinder = window.PostFinder || [];
 			
 				}
 			});
+
+			$('.pf-add').click(function(){
+				t.open();
+			});
+
+			//t.$overlay.appendTo('body');
+			t.$modal.appendTo('body');
+
+
 	
 			t.setup();
 			
@@ -78,15 +87,21 @@ var PostFinder = window.PostFinder || [];
 		},
 		
 		open : function() {
-			var t = this;
+			var t = this
+				h = $(window).height() * .8,
+				m = ((h / 2) * -1) + 'px';
+
+			$('body').css('overflow', 'hidden');
 			t.$overlay.show();
-			t.$modal.show();
+			t.$modal.height(h).css('margin-top', m).show();
+			//t.$modal.show();
 		},
 		
 		close : function() {
 			var t = this;
 			t.$overlay.hide();
 			t.$modal.hide();
+			$('body').css('overflow', 'visible');
 		},
 		
 		setup : function() {
