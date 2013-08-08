@@ -15,16 +15,18 @@ class Post_Finder {
 	function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_js' ) );
 		add_action( 'admin_footer', array( $this, 'admin_footer' ) );
-		
-		add_action( 'wp_ajax_pf_get_posts', 'ajax_get_posts' );
+		add_action( 'wp_ajax_pf_get_posts', array( $this, 'ajax_get_posts' ) );
+		add_action( 'wp_ajax_pf_search_posts', array( $this, 'ajax_search_posts' ) );
 	}
 	
 	/**
 	 *
 	 */
 	function admin_js() {
-		wp_enqueue_script( 'post-finder', plugins_url( '/js/post-finder.js', __FILE__ ), array( 'jquery', 'jquery-ui-draggable', 'jquery-ui-sortable' ), time(), true );
+		wp_enqueue_script( 'post-finder', plugins_url( '/js/post-finder.js', __FILE__ ), array( 'jquery', 'jquery-ui-draggable', 'jquery-ui-sortable', 'underscore' ), time(), true );
 		wp_enqueue_style( 'post-finder', plugins_url( '/css/screen.css', __FILE__ ) );
+
+		//wp_localize_script( 'post-finder', 'post_finder_params', array( 'admin_url' => admin_url() ) );
 	}
 	
 	/**
@@ -35,35 +37,15 @@ class Post_Finder {
 		?>
 		<div id="pf-overlay"></div>
 		<div id="pf-modal">
-			<span class="close">x</span>
-			<ul class="tabs">
-				<li><a href="#" class="selected" data-tab="recent">Recent Posts</a></li>
-				<li><a href="#" data-tab="search">Search</a></li>
-			</ul>
-			<div class="tab-content">
-				<div class="panel recent-panel">
-					<ul>
-						<?php
-						
-						$posts = get_posts( array(
-							'posts_per_page' => 20
-						));
-						
-						if( $posts ) {
-							foreach( $posts as $post ) {
-								echo $this->get_search_li( $post );
-							}
-						}
-						
-						?>
-					</ul>
-				</div>
-				<div class="panel search-panel">
-					<input type="text" class="query" placeholder="Enter Post Title"/>
-					<input type="button" class="button-primary search-posts" value="Search"/>
-					<img src="<?php echo admin_url(); ?>/images/wpspin_light.gif" class="spinner"/>
-					<ul class="draggable search-results"></ul>
-				</div>
+			<!-- <h1>Recent Posts</h1> -->
+			<span class="close">&times;</span>
+			<div class="content">
+				<ul></ul>
+			</div>
+			<div class="search">
+				<input type="text" class="query" placeholder="Enter Post Title"/>
+				<input type="button" class="button-primary search-posts" value="Search"/>
+				<img src="<?php echo admin_url(); ?>/images/wpspin_light.gif" class="spinner"/>
 			</div>
 		</div>
 		<?php
@@ -115,7 +97,7 @@ class Post_Finder {
 		$html .= '<ul>';
 
 		foreach( $posts as $post ) {
-			$html .= self::get_input_li( $post );
+			$html .= self::get_li( $post );
 		}
 
 		$html .= '</ul>';
@@ -126,12 +108,19 @@ class Post_Finder {
 	/**
 	 *
 	 */
-	public static function get_input_li( $post ) {
+	public static function get_li( $post ) {
 		
 		return sprintf(
-			'<li class="pf-item" data-id="%s">%s<nav><a href="%s" target="_blank" class="edit">Edit</a> | <a href="#" class="remove">Remove</a></nav></li>',
+			'<li class="pf-item" data-id="%s">' .
+				'%s'.
+				'<nav>' .
+					'<a href="%s" target="_blank" class="edit">Edit</a>' .
+					'<a href="#" class="remove">Remove</a>' .
+					'<a href="#" class="add">Add</a>' .
+				'</nav>' .
+			'</li>',
 			intval( $post->ID ),
-			get_the_title( $post->ID ),
+			get_the_title( $post->ID ) . ' = ' . $post->ID,
 			get_edit_post_link( $post->ID )
 		);
 	}
@@ -139,24 +128,41 @@ class Post_Finder {
 	/**
 	 *
 	 */
-	function get_search_li( $post ) {
-		return sprintf(
-			'<li data-id="%d">%s</li>',
-			intval( $post->ID ),
-			get_the_title( $post->ID )
-		);
+	function ajax_get_posts() {
+		
+		//check_ajax_referer( 'pf-nonce' );
+
+		//die('here');
+		
+		$posts = get_posts( array(
+			'posts_per_page' => 20,
+			'post__not_in' => array_map( 'intval', explode( ',', $_POST['ids'] ) )
+		));
+
+		header("Content-type: text/json");
+
+		die( json_encode( array( 'posts' => $posts ) ) );
+		
 	}
-	
+
 	/**
 	 *
 	 */
-	function ajax_get_posts() {
+	function ajax_search_posts() {
 		
-		check_ajax_referer( 'pf-nonce' );
+		//check_ajax_referer( 'pf-nonce' );
+
+		//die('here');
 		
-		if( !isset( $_REQUEST['post_ids'] ) ) {
-		
-		}
+		$posts = get_posts( array(
+			'posts_per_page' => 20,
+			's' => sanitize_text_field( $_POST['query'] ),
+			'post__not_in' => array_map( 'intval', explode( ',', $_POST['ids'] ) )
+		));
+
+		header("Content-type: text/json");
+
+		die( json_encode( array( 'posts' => $posts ) ) );
 		
 	}
 }

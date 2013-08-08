@@ -1,9 +1,16 @@
-/* line 1, ../sass/screen.scss */
+/* line 3, ../sass/screen.scss */
 .pf-list {
   overflow: hidden;
   max-width: 400px;
 }
-/* line 6, ../sass/screen.scss */
+/* line 8, ../sass/screen.scss */
+.pf-list .placeholder {
+  padding: 1em 0.5em;
+  border-radius: 0.5em;
+  border: 1px dashed #666;
+  background: none;
+}
+/* line 15, ../sass/screen.scss */
 .pf-list li {
   border: 1px solid #ccc;
   padding: 0.5em;
@@ -13,24 +20,28 @@
   list-style: none;
   cursor: move;
 }
-/* line 15, ../sass/screen.scss */
-.pf-list li nav {
-  float: right;
+/* line 24, ../sass/screen.scss */
+.pf-list li .add {
+  display: none;
 }
-/* line 20, ../sass/screen.scss */
-.pf-list .placeholder {
-  padding: 1em 0.5em;
-  border-radius: 0.5em;
-  border: 1px dashed #666;
-  background: none;
+/* line 29, ../sass/screen.scss */
+.pf-list li .edit:after {
+  content: '|';
+  display: inline-block;
+  margin: 0 0.25em;
 }
 
-/* line 28, ../sass/screen.scss */
+/* line 39, ../sass/screen.scss */
+.pf-item nav {
+  float: right;
+}
+
+/* line 44, ../sass/screen.scss */
 .pf-add {
   float: right;
 }
 
-/* line 32, ../sass/screen.scss */
+/* line 48, ../sass/screen.scss */
 .pf-posts {
   background: #eee;
   padding: 1em;
@@ -39,7 +50,7 @@
   border: 1px solid #ddd;
 }
 
-/* line 40, ../sass/screen.scss */
+/* line 56, ../sass/screen.scss */
 #pf-overlay {
   display: none;
   background: rgba(0, 0, 0, 0.5);
@@ -51,141 +62,103 @@
   z-index: 90;
 }
 
-/* line 51, ../sass/screen.scss */
+/* line 67, ../sass/screen.scss */
 #pf-modal {
   display: none;
-  width: 80%;
-  height: 80%;
+  width: 400px;
+  height: 600px;
   position: absolute;
   top: 50%;
-  left: 10%;
+  left: 50%;
   z-index: 100;
+  margin: -300px 0 0 -200px;
   background: #fff;
   border-radius: 1em;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  padding: 1em;
+  padding: 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
-/* line 65, ../sass/screen.scss */
+/* line 83, ../sass/screen.scss */
+#pf-modal h1 {
+  margin: 0 0 0.5em 0;
+  line-height: 1;
+  color: #666;
+}
+/* line 90, ../sass/screen.scss */
+#pf-modal.loading ul {
+  display: none;
+}
+/* line 94, ../sass/screen.scss */
+#pf-modal.loading .content {
+  background: url(../images/loading.gif) no-repeat center center;
+}
+/* line 99, ../sass/screen.scss */
 #pf-modal .close {
   font-weight: bold;
   text-transform: uppercase;
-  float: right;
-  margin: 0 5px 0 0;
   color: #000;
   opacity: 0.4;
   cursor: pointer;
-  display: block;
   font-family: "Helvetica Neue", Helvetica, Arial;
   text-shadow: 0 1px 0 #fff;
-  font-size: 12px;
+  font-size: 2em;
   line-height: 18px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
 }
-/* line 79, ../sass/screen.scss */
+/* line 113, ../sass/screen.scss */
 #pf-modal .close:hover {
   opacity: 0.2;
 }
-/* line 84, ../sass/screen.scss */
+/* line 118, ../sass/screen.scss */
 #pf-modal li {
-  font-size: 1.25em;
-  padding: 1em 0.5em;
+  font-size: 1em;
+  padding: 0.75em 1em;
   border-bottom: 1px solid #ccc;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #eeeeee));
+  background: -webkit-linear-gradient(top, #ffffff, #eeeeee);
+  background: -moz-linear-gradient(top, #ffffff, #eeeeee);
+  background: -o-linear-gradient(top, #ffffff, #eeeeee);
+  background: linear-gradient(top, #ffffff, #eeeeee);
+  margin: 0;
 }
-
-/* line 94, ../sass/screen.scss */
-#pf-modal .remove {
+/* line 125, ../sass/screen.scss */
+#pf-modal li:last-child {
+  border: 0;
+}
+/* line 129, ../sass/screen.scss */
+#pf-modal li .edit, #pf-modal li .remove {
   display: none;
 }
-
-/* line 97, ../sass/screen.scss */
-.pf-posts .add {
-  display: none;
-}
-
-/* line 102, ../sass/screen.scss */
-.tabs {
+/* line 134, ../sass/screen.scss */
+#pf-modal ul {
   padding: 0;
   margin: 0;
-  overflow: hidden;
-  margin-bottom: -1px;
+  background: #eee;
 }
-
-/* line 109, ../sass/screen.scss */
-.tabs li {
-  float: left;
-  margin: 0;
-  margin-right: 0.5em;
-}
-
-/* line 115, ../sass/screen.scss */
-.tabs li a {
-  padding: 0.5em 1em;
-  border: 1px solid #ddd;
-  background-color: #f1f1f1;
-  background-image: -moz-linear-gradient(-90deg, #f9f9f9, #ececec);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#f9f9f9), to(#ececec));
-  background-image: linear-gradient(top, #f9f9f9, #ececec);
-  text-decoration: none;
-  border-radius: 0.5em 0.5em 0 0;
-  color: #999;
-  display: block;
-  font-weight: bold;
-  float: left;
-  text-shadow: #fff 0 1px 1px;
-}
-
-/* line 131, ../sass/screen.scss */
-.tabs li a:hover {
-  color: #666;
-}
-
-/* line 135, ../sass/screen.scss */
-.tabs li a.selected {
-  background: #fff;
-  border-bottom: 1px solid #fff;
-  margin-bottom: -1px;
-  color: #464646;
-}
-
-/* line 142, ../sass/screen.scss */
-.tab-content {
-  /*padding: 1em;*/
-  border: 1px solid #ddd;
-  clear: both;
-  max-height: 330px;
+/* line 140, ../sass/screen.scss */
+#pf-modal .content {
   overflow-y: scroll;
+  width: 360px;
+  height: 480px;
+  /*@include box-shadow(inset 0 0 5px rgba(0, 0, 0, 0.5));*/
+  border: 1px solid #ccc;
+  margin-top: 30px;
 }
 /* line 149, ../sass/screen.scss */
-.tab-content ul {
-  padding: 0;
-  margin: 0;
+#pf-modal .search {
+  background: #fff;
+  margin-top: 20px;
+}
+/* line 153, ../sass/screen.scss */
+#pf-modal .search input[type=text] {
+  width: 80%;
 }
 
-/* line 155, ../sass/screen.scss */
-.post-finder .panel {
-  display: none;
-}
-
-/* line 159, ../sass/screen.scss */
-.post-finder .panel.selected {
-  display: block;
-}
-
-/* line 163, ../sass/screen.scss */
-#pf-modal .query {
-  width: auto;
-  min-width: 70%;
-  margin-right: 1em;
-}
-
-/* line 169, ../sass/screen.scss */
-.search-panel .spinner {
-  vertical-align: middle;
-  margin-left: 0.5em;
-  margin-top: -0.3em;
-  display: none;
-}
-
-/* line 176, ../sass/screen.scss */
+/* line 161, ../sass/screen.scss */
 .loading .spinner {
   display: inline-block;
 }
