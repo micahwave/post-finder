@@ -13,10 +13,30 @@ class Post_Finder {
 	 *
 	 */
 	function __construct() {
+
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_js' ) );
 		add_action( 'admin_footer', array( $this, 'admin_footer' ) );
 		add_action( 'wp_ajax_pf_get_posts', array( $this, 'ajax_get_posts' ) );
 		add_action( 'wp_ajax_pf_search_posts', array( $this, 'ajax_search_posts' ) );
+
+		add_action( 'print_media_templates', array( $this, 'print_media_templates' ) );
+
+		add_action( 'edit_form_advanced', array( $this, 'test') );
+	}
+
+	function test() {
+		$this->create_finder( 'my_test', '' );
+	}
+
+	/**
+	 * Adds a new template for the HelloWorld view.
+	 */
+	public static function print_media_templates() {
+		?>
+		<script type="text/html" id="tmpl-hello-world">
+			<strong>Hello World!!!</strong>
+		</script>
+		<?php
 	}
 	
 	/**
@@ -59,25 +79,23 @@ class Post_Finder {
 	 */
 	public static function create_finder( $input, $value ) {
 
-		if( empty( $value ) )
-			return;
+		if( !empty( $value ) ) {
 
-		// sanitize value
-		$post_ids = array_map( 'intval', explode( ',', $value ) );
-
-		if( !count( $post_ids ) )
-			return;
-
-		$posts = get_posts( array(
-			'posts_per_page' => 200,
-			'post__in' => $post_ids,
-			'orderby' => 'post__in'
-		));
-
+			$posts = get_posts( array(
+				'posts_per_page' => 200,
+				'post__in' => array_map( 'intval', explode( ',', $value ) ),
+				'orderby' => 'post__in'
+			));
+		}
+	
 		$html = '<input type="text" name="' . esc_attr( $input ) . '" value="'. $value . '" class="pf-input"/>';
+		$html .= '<ul>';
 
-		$html .= $posts ? self::build_list( $posts ) : '<p>Sorry, no posts were found.</p>';
+		if( !empty( $posts ) ) {
+			self::build_list( $posts );
+		}
 
+		$html .= '</ul>';
 		$html .= '<input type="button" name="" value="Add Posts" class="pf-add button">';
 
 		echo '<div class="pf-list">' . $html . '</div>';
@@ -94,13 +112,13 @@ class Post_Finder {
 		if( !count( $posts ) )
 			return $html;
 
-		$html .= '<ul>';
+		
 
 		foreach( $posts as $post ) {
 			$html .= self::get_li( $post );
 		}
 
-		$html .= '</ul>';
+		
 
 		return $html;
 	}
