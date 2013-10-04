@@ -6,6 +6,8 @@
  * Description: Adds a UI for currating and ordering posts
  * Version: 0.1
  */
+
+if( !class_exists( 'Post_Finder' ) ) :
  
 class Post_Finder {
 	
@@ -23,7 +25,17 @@ class Post_Finder {
 	 *
 	 */
 	function admin_js() {
-		wp_enqueue_script( 'post-finder', plugins_url( '/js/post-finder.js', __FILE__ ), array( 'jquery', 'jquery-ui-draggable', 'jquery-ui-sortable' ), time(), true );
+		wp_enqueue_script(
+			'post-finder',
+			plugins_url( '/js/post-finder.js', __FILE__ ),
+			array(
+				'jquery',
+				'jquery-ui-draggable',
+				'jquery-ui-sortable'
+			),
+			time(),
+			true
+		);
 		wp_enqueue_style( 'post-finder', plugins_url( '/css/screen.css', __FILE__ ) );
 	}
 	
@@ -33,38 +45,12 @@ class Post_Finder {
 	function admin_footer() {
 		wp_nonce_field( 'post-finder', 'pf-nonce' );
 		?>
-		<div id="pf-overlay"></div>
-		<div id="pf-modal">
-			<span class="close">x</span>
-			<ul class="tabs">
-				<li><a href="#" class="selected" data-tab="recent">Recent Posts</a></li>
-				<li><a href="#" data-tab="search">Search</a></li>
-			</ul>
-			<div class="tab-content">
-				<div class="panel recent-panel">
-					<ul>
-						<?php
-						
-						$posts = get_posts( array(
-							'posts_per_page' => 20
-						));
-						
-						if( $posts ) {
-							foreach( $posts as $post ) {
-								echo $this->get_search_li( $post );
-							}
-						}
-						
-						?>
-					</ul>
-				</div>
-				<div class="panel search-panel">
-					<input type="text" class="query" placeholder="Enter Post Title"/>
-					<input type="button" class="button-primary search-posts" value="Search"/>
-					<img src="<?php echo admin_url(); ?>/images/wpspin_light.gif" class="spinner"/>
-					<ul class="draggable search-results"></ul>
-				</div>
-			</div>
+		<div style="background:red;padding:4em">
+			<?php Post_Finder::render( 'test_finder', null, array(
+				'limit' => 5,
+				'post_type' => 'post'
+			));
+			?>
 		</div>
 		<?php
 	}
@@ -75,19 +61,19 @@ class Post_Finder {
 	 * @param string Input name
 	 * @param string Comma seperated post ids
 	 */
-	public static function create_finder( $input, $value ) {
+	public static function render( $name, $value, $args ) {
 
 		if( empty( $value ) )
-			return;
+			//return;
 
 		// sanitize value
 		$post_ids = array_map( 'intval', explode( ',', $value ) );
 
 		if( !count( $post_ids ) )
-			return;
+			//return;
 
 		$posts = get_posts( array(
-			'posts_per_page' => 200,
+			'posts_per_page' => 10,
 			'post__in' => $post_ids,
 			'orderby' => 'post__in'
 		));
@@ -161,3 +147,5 @@ class Post_Finder {
 	}
 }
 new Post_Finder();
+
+endif;
