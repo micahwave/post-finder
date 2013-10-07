@@ -188,8 +188,7 @@ class Post_Finder {
 }
 new Post_Finder();
 
-endif;
-
+/*
 function test_post_finder() {
 	?>
 	<div style="border:1px solid red;padding:4em 400px">
@@ -202,3 +201,6 @@ function test_post_finder() {
 	<?php
 }
 add_action( 'admin_footer', 'test_post_finder' );
+*/
+
+endif;
