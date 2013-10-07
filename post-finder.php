@@ -60,7 +60,7 @@ class Post_Finder {
 	 * @param string Expecting comma seperated post ids
 	 * @param array Field options
 	 */
-	public static function render( $name, $value, $options ) {
+	public static function render( $name, $value, $options = array() ) {
 
 		global $wp_post_types;
 
@@ -84,7 +84,7 @@ class Post_Finder {
 		
 		
 		// get current selected posts if we have a value
-		if( !empty( $value ) ) {
+		if( !empty( $value ) && is_string( $value ) ) {
 
 			$post_ids = array_map( 'intval', explode( ',', $value ) );
 
@@ -108,7 +108,7 @@ class Post_Finder {
 			<ul class="list">
 				<?php
 
-				if( $posts ) {
+				if( !empty( $posts ) ) {
 					foreach( $posts as $post ) {
 						printf(
 							'<li data-id="%s">' .
@@ -159,7 +159,7 @@ class Post_Finder {
 	 */
 	function search_posts() {
 		
-		check_ajax_referer( 'post_finder_nonce' );
+		check_ajax_referer( 'post_finder' );
 
 		// possible vars we'll except
 		$vars = array(
@@ -170,13 +170,13 @@ class Post_Finder {
 			'post_parent'
 		);
 
-		// make filterable?
-		$args = array(
-			'posts_per_page' => 20,
-			's' => sanitize_text_field( $_REQUEST['query'] ),
-			'post_status' => 'publish'
-			//'post__not_in' => array_map( 'intval', explode( ',', $_REQUEST['ids'] ) )
-		);
+		$args = array();
+
+		foreach( $vars as $var ) {
+			if( isset( $_REQUEST[$var] ) ) {
+				$args[$var] = sanitize_text_field( $_REQUEST[$var] );
+			}
+		}
 
 		$posts = get_posts( $args );
 

@@ -9,7 +9,7 @@
 			$list = $self.find('.list'),
 			$search = $self.find('.search'),
 			$results = $search.find('.results'),
-			$query = $search.find('.input[type=text]'),
+			$query = $search.find('input[type=text]'),
 			nonce = $('#post_finder_nonce').val(),
 			template = [
 				'<li data-id="<%= id %>">',
@@ -48,7 +48,7 @@
 			// remove button
 			$list.on('click', '.remove', function(e){
 				e.preventDefault();
-				remove_item( $(this).closest('li').data('id'); );
+				remove_item( $(this).closest('li').data('id') );
 			});
 
 			// add button
@@ -77,6 +77,9 @@
 			// add item
 			$list.append(_.template(template, { id: id, title: title }));
 
+			// hide notice
+			$list.find('.notice').hide();
+
 			// remove from select if there
 			$select.find('option[value="' + id + '"]').remove();
 
@@ -88,6 +91,11 @@
 		 */
 		remove_item = function( id ) {
 			$list.find('li[data-id="' + id + '"]').remove();
+
+			// show notice if no posts
+			if( $list.find('li').length == 0 ) {
+				$list.find('.notice').show();
+			}
 		}
 
 		/**
