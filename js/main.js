@@ -155,7 +155,3 @@
 	}
 
 })(jQuery);
-
-jQuery(document).ready(function($){
-	$('.post-finder').postFinder();
-});

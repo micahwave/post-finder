@@ -35,9 +35,10 @@ class Post_Finder {
 			array(
 				'jquery',
 				'jquery-ui-draggable',
-				'jquery-ui-sortable'
+				'jquery-ui-sortable',
+				'underscore'
 			),
-			time(),
+			null,
 			true
 		);
 
@@ -149,6 +150,7 @@ class Post_Finder {
 				<ul class="results"></ul>
 			</div>
 		</div>
+		<script>jQuery(document).ready(function($){$('.post-finder').postFinder()});</script>
 		<?php
 	}
 
@@ -187,20 +189,5 @@ class Post_Finder {
 	}
 }
 new Post_Finder();
-
-/*
-function test_post_finder() {
-	?>
-	<div style="border:1px solid red;padding:4em 400px">
-		<?php Post_Finder::render( 'test_finder', null, array(
-			'limit' => 5,
-			'post_type' => 'post'
-		));
-		?>
-	</div>
-	<?php
-}
-add_action( 'admin_footer', 'test_post_finder' );
-*/
 
 endif;
