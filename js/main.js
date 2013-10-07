@@ -84,13 +84,17 @@
 			$select.find('option[value="' + id + '"]').remove();
 
 			// update the input
+			serialize();
 		}
 
 		/**
 		 *
 		 */
 		remove_item = function( id ) {
+			
 			$list.find('li[data-id="' + id + '"]').remove();
+
+			serialize();
 
 			// show notice if no posts
 			if( $list.find('li').length == 0 ) {
