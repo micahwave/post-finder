@@ -38,6 +38,10 @@
 				text-align: right;
 				line-height: 35px;
 			}
+
+			&:last-child {
+				margin-bottom: 0;
+			}
 		}
 
 		nav {
