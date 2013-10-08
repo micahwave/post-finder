@@ -65,6 +65,10 @@ class Post_Finder {
 
 		global $wp_post_types;
 
+		$options = wp_parse_args( $options, array(
+			'show_numbers' => true // display 
+		));
+
 		// check to see if we have query args
 		$args = isset( $options['args'] ) ? $options['args'] : array();
 
@@ -102,9 +106,14 @@ class Post_Finder {
 
 		// get recent posts
 		$recent_posts = get_posts( apply_filters( 'post_finder_' . $name . '_recent_post_args', $args ) );
+
+		$class = 'post-finder';
+
+		if( !$options['show_numbers'] )
+			$class .= ' no-numbers';
 		
 		?>
-		<div class="post-finder" data-args='<?php echo json_encode( $args ); ?>'>
+		<div class="<?php echo esc_attr( $class ); ?>" data-args='<?php echo json_encode( $args ); ?>'>
 			<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
 			<ul class="list">
 				<?php
@@ -116,8 +125,8 @@ class Post_Finder {
 								'<span>%s</span>' .
 								'<nav>' .
 									'<a href="%s" target="_blank">Edit</a>' .
-									'<a href="#" class="remove">Remove</a>' .
 									'<a href="%s" target="_blank">View</a>' .
+									'<a href="#" class="remove">Remove</a>' .
 								'</nav>' .
 							'</li>',
 							intval( $post->ID ),

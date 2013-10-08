@@ -6,6 +6,11 @@
 
 	.list {
 
+		.notice {
+			text-align: center;
+			margin: 0;
+		}
+
 		background: #eee;
 		margin: 0;
 		padding: 1em;
@@ -40,6 +45,18 @@
 
 			a {
 				margin-right: 1em;
+			}
+		}
+	}
+
+	&.no-numbers {
+		.list li {
+
+			margin: 0;
+
+			&:before {
+				content: '';
+				display: none;
 			}
 		}
 	}
