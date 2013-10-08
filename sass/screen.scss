@@ -8,7 +8,7 @@
 
 		.notice {
 			text-align: center;
-			margin-left: 0;
+			margin: 0;
 		}
 
 		background: #eee;
@@ -52,7 +52,7 @@
 	&.no-numbers {
 		.list li {
 
-			margin: 0;
+			margin-left: 0;
 
 			&:before {
 				content: '';
