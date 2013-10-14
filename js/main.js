@@ -30,7 +30,7 @@
 			function init() {
 
 				// bind select
-				$select.change(function(){
+				$select.on('change click', function(){
 					add_item( $(this).val(), $('option:selected', this).text() );
 				});
 
