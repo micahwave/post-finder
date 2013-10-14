@@ -70,6 +70,11 @@
 				if( id == 0 )
 					return;
 
+				if( $list.find('li').length >= $self.data('limit') ) {
+					alert('Sorry, maximum number of items added.');
+					return;
+				}
+
 				// see if item already exists
 				if( $list.find('li[data-id="' + id + '"]').length ) {
 					alert('Sorry, that item has already been added.');

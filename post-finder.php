@@ -66,7 +66,8 @@ class Post_Finder {
 		global $wp_post_types;
 
 		$options = wp_parse_args( $options, array(
-			'show_numbers' => true // display 
+			'show_numbers' => true, // display # next to post
+			'limit' => 10
 		));
 
 		// check to see if we have query args
@@ -87,7 +88,6 @@ class Post_Finder {
 			$plural = 'Posts';
 		}
 		
-		
 		// get current selected posts if we have a value
 		if( !empty( $value ) && is_string( $value ) ) {
 
@@ -95,7 +95,7 @@ class Post_Finder {
 
 			$posts = get_posts( array(
 				'post__in' => $post_ids,
-				'orderby' => 'post__in'
+				'orderby' => 'post__in',
 			));
 		}
 
@@ -113,7 +113,7 @@ class Post_Finder {
 			$class .= ' no-numbers';
 		
 		?>
-		<div class="<?php echo esc_attr( $class ); ?>" data-args='<?php echo json_encode( $args ); ?>'>
+		<div class="<?php echo esc_attr( $class ); ?>" data-limit="<?php echo intval( $options['limit'] ); ?>" data-args='<?php echo json_encode( $args ); ?>'>
 			<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
 			<ul class="list">
 				<?php
