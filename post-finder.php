@@ -31,7 +31,7 @@ class Post_Finder {
 
 		wp_enqueue_script(
 			'post-finder',
-			plugins_url( '/js/main.js', __FILE__ ),
+			plugins_url( 'js/main.js', __FILE__ ),
 			array(
 				'jquery',
 				'jquery-ui-draggable',
@@ -42,7 +42,7 @@ class Post_Finder {
 			true
 		);
 
-		wp_enqueue_style( 'post-finder', plugins_url( '/css/screen.css', __FILE__ ) );
+		wp_enqueue_style( 'post-finder', plugins_url( 'css/screen.css', __FILE__ ) );
 	}
 	
 	/**
