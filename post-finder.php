@@ -95,6 +95,7 @@ class Post_Finder {
 			$post_ids = array_map( 'intval', explode( ',', $value ) );
 
 			$posts = get_posts( array(
+				'post_type' => $args['post_type'],
 				'post__in' => $post_ids,
 				'orderby' => 'post__in',
 			));
