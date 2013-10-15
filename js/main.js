@@ -115,12 +115,16 @@
 			function search() {
 
 				var html = '',
+					args = $self.data('args'),
 					data = {
-					action: 'pf_search_posts',
-					s: $query.val(),
-					_ajax_nonce: nonce
-				}
+						action: 'pf_search_posts',
+						s: $query.val(),
+						_ajax_nonce: nonce
+					};
 
+				// merge the default args in
+				data = $.extend(data, $self.data('args'));
+				
 				// display loading
 				$search.addClass('loading');
 
@@ -147,8 +151,6 @@
 			 *
 			 */
 			function serialize() {
-
-				console.log('serialize for ' + $field.attr('name'));
 
 				var ids = [];
 

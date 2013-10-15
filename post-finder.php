@@ -76,7 +76,8 @@ class Post_Finder {
 		// setup some defaults
 		$args = wp_parse_args( $args, array(
 			'post_type' => 'post',
-			'posts_per_page' => 10
+			'posts_per_page' => 10,
+			'post_status' => 'publish'
 		));
 
 		// now that we have a post type, figure out the proper label
@@ -175,17 +176,22 @@ class Post_Finder {
 		// possible vars we'll except
 		$vars = array(
 			'posts_per_page',
-			'post_status',
 			's',
-			'post_type',
-			'post_parent'
+			'post_parent',
+			'post_status',
+			'post_type'
 		);
 
 		$args = array();
 
+		// clean the basic vars
 		foreach( $vars as $var ) {
 			if( isset( $_REQUEST[$var] ) ) {
-				$args[$var] = sanitize_text_field( $_REQUEST[$var] );
+				if( is_array( $_REQUEST[$var] ) ) {
+					$args[$var] = array_map( 'sanitize_text_field', $_REQUEST[$var] );
+				} else {
+					$args[$var] = sanitize_text_field( $_REQUEST[$var] );
+				}
 			}
 		}
 
