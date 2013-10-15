@@ -96,8 +96,10 @@ class Post_Finder {
 
 			$posts = get_posts( array(
 				'post_type' => $args['post_type'],
+				'post_status' => $args['post_status'],
 				'post__in' => $post_ids,
 				'orderby' => 'post__in',
+				'posts_per_page' => count( $post_ids )
 			));
 		}
 
