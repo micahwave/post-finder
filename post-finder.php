@@ -176,13 +176,14 @@ class Post_Finder {
 		
 		check_ajax_referer( 'post_finder' );
 
+		if( !current_user_can( 'edit_posts' ) )
+			return;
+
 		// possible vars we'll except
 		$vars = array(
-			'posts_per_page',
 			's',
 			'post_parent',
 			'post_status',
-			'post_type'
 		);
 
 		$args = array();
@@ -196,6 +197,44 @@ class Post_Finder {
 					$args[$var] = sanitize_text_field( $_REQUEST[$var] );
 				}
 			}
+		}	
+
+		// this needs to be within a range
+		if( isset( $_REQUEST['posts_per_page'] ) ) {
+
+			$num = intval( $_REQUEST['posts_per_page'] );
+
+			if( $num <= 0 ) {
+				$num = 10;
+			} elseif( $num > 100 ) {
+				$num = 100;
+			}
+
+			$args['posts_per_page'] = $num;
+		}
+
+		// handle post type validation differently
+		if( isset( $_REQUEST['post_type'] ) ) {
+
+			$post_types = get_post_types( array( 'public' => true ) );
+
+			if( is_array( $_REQUEST['post_type'] ) ) {
+
+				foreach( $_REQUEST['post_type'] as $type ) {
+
+					if( in_array( $type, $post_types ) ) {
+						$args['post_type'][] = $type;
+					}
+				}
+
+			} else {
+
+				if( in_array( $_REQUEST['post_type'], $post_types ) )
+					$args['post_type'] = $_REQUEST['post_type'];
+			
+			}
+
+			
 		}
 
 		$posts = get_posts( $args );
