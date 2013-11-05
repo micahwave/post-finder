@@ -42,6 +42,14 @@ class Post_Finder {
 			true
 		);
 
+		wp_localize_script(
+			'post-finder',
+			'POST_FINDER_CONFIG',
+			array(
+				'adminurl' => admin_url(),
+			)
+		);
+
 		wp_enqueue_style( 'post-finder', plugins_url( 'css/screen.css', __FILE__ ) );
 	}
 	
@@ -136,7 +144,7 @@ class Post_Finder {
 							intval( $post->ID ),
 							esc_html( $post->post_title ),
 							get_edit_post_link( $post->ID ),
-							get_the_guid( $post->ID )
+							get_permalink( $post->ID )
 						);
 					}
 				} else {
@@ -151,7 +159,7 @@ class Post_Finder {
 			<select>
 				<option value="0">Choose a <?php echo esc_html( $singular ); ?></option>
 				<?php foreach( $recent_posts as $post ) : ?>
-				<option value="<?php echo intval( $post->ID ); ?>"><?php echo esc_html( $post->post_title ); ?></option>
+				<option value="<?php echo intval( $post->ID ); ?>" data-permalink="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( $post->post_title ); ?></option>
 				<?php endforeach; ?>
 			</select>
 			<?php endif; ?>
@@ -238,6 +246,12 @@ class Post_Finder {
 		}
 
 		$posts = get_posts( $args );
+
+		// Get the permalink so that View/Edit links work
+		foreach( $posts as $key => $post )
+			$posts[$key]->permalink = get_permalink( $post->ID );
+
+		wp_reset_postdata();
 
 		if( $posts )
 			header("Content-type: text/json");
