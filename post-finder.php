@@ -251,8 +251,6 @@ class Post_Finder {
 		foreach( $posts as $key => $post )
 			$posts[$key]->permalink = get_permalink( $post->ID );
 
-		wp_reset_postdata();
-
 		if( $posts )
 			header("Content-type: text/json");
 			die( json_encode( array( 'posts' => $posts ) ) );
