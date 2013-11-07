@@ -2,8 +2,8 @@ var POST_FINDER_TEMPLATE = [
 	'<li data-id="<%= id %>">',
 		'<span><%= title %></span>',
 		'<nav>',
-			'<a href="#" target="_blank">Edit</a>',
-			'<a href="#" target="_blank">View</a>',
+			'<a href="<%= edit_url %>" target="_blank">Edit</a>',
+			'<a href="<%= permalink %>" target="_blank">View</a>',
 			'<a href="#" class="remove">Remove</a>',
 		'</nav>',
 	'</li>'
@@ -46,7 +46,7 @@ var POST_FINDER_TEMPLATE = [
 			// bind select
 	
 			plugin.$select.on('change click', function(e){
-				plugin.add_item( $(this).val(), $('option:selected', this).text() );
+				plugin.add_item( $(this).val(), $('option:selected', this).text(), $('option:selected', this).data('permalink') );
 			});
 
 			// bind search button
@@ -72,11 +72,11 @@ var POST_FINDER_TEMPLATE = [
 			plugin.$results.on('click', '.add', function(e){
 				e.preventDefault();
 				$li = $(this).closest('li');
-				plugin.add_item( $li.data('id'), $li.find('span').text() );
+				plugin.add_item( $li.data('id'), $li.find('span').text(), $li.data('permalink') );
 			});
 		}
 
-		plugin.add_item = function( id, title ) {//private method
+		plugin.add_item = function( id, title, permalink ) {//private method
 	
 			// make sure we have an id
 			if( id == 0 )
@@ -94,7 +94,12 @@ var POST_FINDER_TEMPLATE = [
 			}
 
 			// add item
-			plugin.$list.append(_.template(plugin.settings.template, { id: id, title: title }));
+			plugin.$list.append(_.template(plugin.settings.template, { 
+				id: id, 
+				title: title,
+				edit_url: POST_FINDER_CONFIG.adminurl + 'post.php?post=' + id + '&action=edit',
+				permalink: permalink
+			}));
 
 			// hide notice
 			plugin.$list.find('.notice').hide();
@@ -142,7 +147,7 @@ var POST_FINDER_TEMPLATE = [
 					if( typeof response.posts != "undefined" ) {
 						for( var i in response.posts ) {
 							html += _.template([
-								'<li data-id="<%= ID %>">',
+								'<li data-id="<%= ID %>" data-permalink="<%= permalink %>">',
 									'<a href="#" class="add">Add</a>',
 									'<span><%= post_title %></span>',
 								'</li>'
