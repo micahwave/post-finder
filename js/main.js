@@ -46,33 +46,33 @@ var POST_FINDER_TEMPLATE = [
 			// bind select
 	
 			plugin.$select.on('change click', function(e){
-				add_item( $(this).val(), $('option:selected', this).text() );
+				plugin.add_item( $(this).val(), $('option:selected', this).text() );
 			});
 
 			// bind search button
 			plugin.$search.find('.button').click(function(){
-				search();
+				plugin.search();
 			});
 
 			// bind list
 			plugin.$list.sortable({
 				placeholder: 'placeholder',
 				update: function(ui, e) {
-					serialize();
+					plugin.serialize();
 				}
 			});
 
 			// remove button
 			plugin.$list.on('click', '.remove', function(e){
 				e.preventDefault();
-				remove_item( $(this).closest('li').data('id') );
+				plugin.remove_item( $(this).closest('li').data('id') );
 			});
 
 			// add button
 			plugin.$results.on('click', '.add', function(e){
 				e.preventDefault();
 				$li = $(this).closest('li');
-				add_item( $li.data('id'), $li.find('span').text() );
+				plugin.add_item( $li.data('id'), $li.find('span').text() );
 			});
 		}
 
@@ -103,7 +103,7 @@ var POST_FINDER_TEMPLATE = [
 			plugin.$select.find('option[value="' + id + '"]').remove();
 
 			// update the input
-			serialize();
+			plugin.serialize();
 		}
 
 		//Prv method to remove an item
@@ -111,7 +111,7 @@ var POST_FINDER_TEMPLATE = [
 			
 			plugin.$list.find('li[data-id="' + id + '"]').remove();
 
-			serialize();
+			plugin.serialize();
 
 			// show notice if no posts
 			if( plugin.$list.find('li').length == 0 ) {

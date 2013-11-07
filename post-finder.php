@@ -7,12 +7,12 @@
  * Version: 0.1
  */
 
-if( !class_exists( 'Post_Finder_Extreme' ) ) :
+if( !class_exists( 'NS_Post_Finder' ) ) :
  
 /**
- * Namespacing the class with "Extreme" to ensure uniqueness
+ * Namespacing the class with "NS" to ensure uniqueness
  */
-class Post_Finder_Extreme {
+class NS_Post_Finder {
 	
 	/**
 	 * Setup hooks
@@ -41,7 +41,7 @@ class Post_Finder_Extreme {
 				'jquery-ui-sortable',
 				'underscore'
 			),
-			null,
+			time(),
 			true
 		);
 
@@ -248,6 +248,6 @@ class Post_Finder_Extreme {
 		
 	}
 }
-new Post_Finder_Extreme();
+new NS_Post_Finder();
 
 endif;
