@@ -7,9 +7,12 @@
  * Version: 0.1
  */
 
-if( !class_exists( 'Post_Finder' ) ) :
+if( !class_exists( 'Post_Finder_Extreme' ) ) :
  
-class Post_Finder {
+/**
+ * Namespacing the class with "Extreme" to ensure uniqueness
+ */
+class Post_Finder_Extreme {
 	
 	/**
 	 * Setup hooks
@@ -245,6 +248,6 @@ class Post_Finder {
 		
 	}
 }
-new Post_Finder();
+new Post_Finder_Extreme();
 
 endif;

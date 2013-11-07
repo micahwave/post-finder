@@ -1,7 +1,4 @@
-//TODO: little wierd to have this outside the plugin but 
-//I don't want the browser to have to do this join every 
-//time the plugin is called on an element which happenes a lot.
-var POSTFINDERTEMPLATE = [//Very specific name so as to not be overwritten accidentaly
+var POST_FINDER_TEMPLATE = [
 	'<li data-id="<%= id %>">',
 		'<span><%= title %></span>',
 		'<nav>',
@@ -17,7 +14,7 @@ var POSTFINDERTEMPLATE = [//Very specific name so as to not be overwritten accid
 	$.postFinder = function(element, options) {
 
 		var defaults = {
-			template : POSTFINDERTEMPLATE,
+			template : POST_FINDER_TEMPLATE,
 			fieldSelector : 'input[type=hidden]',
 			selectSelector : 'select',
 			listSelector : '.list',
@@ -35,7 +32,7 @@ var POSTFINDERTEMPLATE = [//Very specific name so as to not be overwritten accid
 			element = element;//store html el		
 
 		plugin.init = function() {
-			console.log("init");
+		
 			plugin.settings = $.extend({}, defaults, options);//over write defaults with passed options
 			//all jquery objects are fetched once and stored in the plugin object
 			plugin.$field = $element.find(plugin.settings.fieldSelector),
@@ -47,8 +44,7 @@ var POSTFINDERTEMPLATE = [//Very specific name so as to not be overwritten accid
 			plugin.nonce = $(plugin.settings.nonceSelector).val();
 
 			// bind select
-			console.log("select", plugin.$select);
-			console.log("select", plugin.settings.selectSelector);
+	
 			plugin.$select.on('change click', function(e){
 				add_item( $(this).val(), $('option:selected', this).text() );
 			});
@@ -67,7 +63,6 @@ var POSTFINDERTEMPLATE = [//Very specific name so as to not be overwritten accid
 			});
 
 			// remove button
-			console.log("list", plugin.$list);
 			plugin.$list.on('click', '.remove', function(e){
 				e.preventDefault();
 				remove_item( $(this).closest('li').data('id') );
@@ -81,8 +76,8 @@ var POSTFINDERTEMPLATE = [//Very specific name so as to not be overwritten accid
 			});
 		}
 
-		var add_item = function( id, title ) {//private method
-			console.log("add item");
+		plugin.add_item = function( id, title ) {//private method
+	
 			// make sure we have an id
 			if( id == 0 )
 				return;
@@ -112,8 +107,8 @@ var POSTFINDERTEMPLATE = [//Very specific name so as to not be overwritten accid
 		}
 
 		//Prv method to remove an item
-		var remove_item = function( id ) {
-			console.log("remove item");
+		plugin.remove_item = function( id ) {
+			
 			plugin.$list.find('li[data-id="' + id + '"]').remove();
 
 			serialize();
@@ -124,8 +119,8 @@ var POSTFINDERTEMPLATE = [//Very specific name so as to not be overwritten accid
 			}
 		}
 
-		var search = function() {
-			console.log("search");
+		plugin.search = function() {
+		
 			var html = '',
 				args = $element.data('args'),
 				data = {
@@ -159,8 +154,8 @@ var POSTFINDERTEMPLATE = [//Very specific name so as to not be overwritten accid
 			);
 		}
 
-		var serialize = function() {
-			console.log("serialize");
+		plugin.serialize = function() {
+			
 			var ids = [];
 
 			plugin.$list.find('li').each(function(){
