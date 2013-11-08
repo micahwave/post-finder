@@ -74,8 +74,6 @@ class NS_Post_Finder {
 	 */
 	public static function render( $name, $value, $options = array() ) {
 
-		global $wp_post_types;
-
 		$options = wp_parse_args( $options, array(
 			'show_numbers' => true, // display # next to post
 			'limit' => 10
@@ -92,9 +90,13 @@ class NS_Post_Finder {
 		));
 
 		// now that we have a post type, figure out the proper label
-		if( isset( $wp_post_types[$args['post_type']] ) ) {
-			$singular = $wp_post_types[$args['post_type']]->labels->singular_name;
-			$plural = $wp_post_types[$args['post_type']]->labels->name;
+		if ( is_array( $args['post_type'] ) ) {
+			$singular = 'Item';
+			$plural = 'Items';
+		}
+		elseif( $post_type = get_post_type_object( $args['post_type'] ) ) {
+			$singular = $post_type->labels->singular_name;
+			$plural = $post_type->labels->name;
 		} else {
 			$singular = 'Post';
 			$plural = 'Posts';
