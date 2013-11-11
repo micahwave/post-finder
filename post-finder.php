@@ -136,9 +136,11 @@ class NS_Post_Finder {
 				<?php
 
 				if( !empty( $posts ) ) {
+					$i = 1;
 					foreach( $posts as $post ) {
 						printf(
 							'<li data-id="%s">' .
+								'<input type="text" size="3" maxlength="3" max="3" value="%s">' .
 								'<span>%s</span>' .
 								'<nav>' .
 									'<a href="%s" target="_blank">Edit</a>' .
@@ -147,10 +149,12 @@ class NS_Post_Finder {
 								'</nav>' .
 							'</li>',
 							intval( $post->ID ),
+							intval( $i ),
 							esc_html( $post->post_title ),
 							get_edit_post_link( $post->ID ),
 							get_permalink( $post->ID )
 						);
+						$i++;
 					}
 				} else {
 					echo '<p class="notice">No ' . esc_html( $plural ) . ' added.</p>';

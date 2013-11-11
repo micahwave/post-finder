@@ -1,5 +1,6 @@
 var POST_FINDER_TEMPLATE = [
 	'<li data-id="<%= id %>">',
+		'<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">',
 		'<span><%= title %></span>',
 		'<nav>',
 			'<a href="<%= edit_url %>" target="_blank">Edit</a>',
@@ -98,7 +99,8 @@ var POST_FINDER_TEMPLATE = [
 				id: id, 
 				title: title,
 				edit_url: POST_FINDER_CONFIG.adminurl + 'post.php?post=' + id + '&action=edit',
-				permalink: permalink
+				permalink: permalink,
+				pos: plugin.$list.length + 1
 			}));
 
 			// hide notice
@@ -161,10 +163,12 @@ var POST_FINDER_TEMPLATE = [
 
 		plugin.serialize = function() {
 			
-			var ids = [];
+			var ids = [], i = 1;
 
 			plugin.$list.find('li').each(function(){
+				$(this).find('input').val(i);
 				ids.push( $(this).data('id') );
+				i++;
 			});
 
 			plugin.$field.val( ids.join(',') );

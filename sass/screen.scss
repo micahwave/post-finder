@@ -2,7 +2,7 @@
 
 .post-finder {
 
-	max-width: 400px;
+	max-width: 500px;
 
 	.list {
 
@@ -27,17 +27,26 @@
 			margin-bottom: 1em;
 			list-style: none;
 			counter-increment: list-counter;
-			margin-left: 2em;
+			margin-left: 65px;
 			text-align: left;
+			position: relative;
 
+			input[type=text] {
+				position: absolute;
+				margin-left: -80px;
+				text-align: center;
+			}
+			
+			/*
 			&:before {
 				content: counter(list-counter) ' ';
 				float: left;
-				margin-left: -40px;
+				margin-left: -80px;
 				font-size: 1.5em;
 				text-align: right;
 				line-height: 35px;
 			}
+			*/
 
 			&:last-child {
 				margin-bottom: 0;
