@@ -49,7 +49,7 @@ var POSTFINDERTEMPLATE = [//Very specific name so as to not be overwritten accid
 			// bind select
 			console.log("select", plugin.$select);
 			console.log("select", plugin.settings.selectSelector);
-			plugin.$select.on('change click', function(e){
+			plugin.$select.on('change', function(e){
 				add_item( $(this).val(), $('option:selected', this).text() );
 			});
 
