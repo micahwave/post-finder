@@ -45,7 +45,7 @@ var POST_FINDER_TEMPLATE = [
 
 			// bind select
 	
-			plugin.$select.on('change click', function(e){
+			plugin.$select.on('change', function(e){
 				plugin.add_item( $(this).val(), $('option:selected', this).text(), $('option:selected', this).data('permalink') );
 			});
 
