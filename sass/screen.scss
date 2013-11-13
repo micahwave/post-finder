@@ -78,19 +78,23 @@
 		}
 	}
 
+	select {
+		max-width: 100%;
+	}
+
 	&.no-numbers {
+
 		.list li {
-
 			margin-left: 0;
+		}
 
-			&:before {
-				content: '';
-				display: none;
-			}
+		.list li input[type=text] {
+			display: none;
 		}
 	}
 
 	.search {
+		
 		background: none;
 
 		input {
