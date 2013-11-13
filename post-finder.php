@@ -143,9 +143,9 @@ class NS_Post_Finder {
 								'<input type="text" size="3" maxlength="3" max="3" value="%s">' .
 								'<span>%s</span>' .
 								'<nav>' .
-									'<a href="%s" target="_blank">Edit</a>' .
-									'<a href="%s" target="_blank">View</a>' .
-									'<a href="#" class="remove">Remove</a>' .
+									'<a href="%s" class="icon-pencil" target="_blank"></a>' .
+									'<a href="%s" class="icon-eye" target="_blank"></a>' .
+									'<a href="#" class="icon-remove"></a>' .
 								'</nav>' .
 							'</li>',
 							intval( $post->ID ),

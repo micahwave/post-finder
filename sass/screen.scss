@@ -1,8 +1,9 @@
 @import "compass/css3";
+@import "icons";
 
 .post-finder {
 
-	max-width: 500px;
+	max-width: 600px;
 
 	.list {
 
@@ -19,45 +20,60 @@
 
 		li {
 			border: 1px solid #ccc;
-			padding: 0.5em 1em;
 			@include border-radius(0.75em);
 			@include background(linear-gradient(top, #eee, #ddd));
-			line-height: 1.5;
 			cursor: move;
 			margin-bottom: 1em;
 			list-style: none;
-			counter-increment: list-counter;
-			margin-left: 65px;
+			margin-left: 55px;
 			text-align: left;
 			position: relative;
+			height: 40px;
+			padding: 0.5em;
+			padding-right: 70px;
+			@include box-sizing(border-box);
 
 			input[type=text] {
 				position: absolute;
-				margin-left: -80px;
+				margin-left: -65px;
 				text-align: center;
+				padding: 2px 3px;
 			}
-			
-			/*
-			&:before {
-				content: counter(list-counter) ' ';
-				float: left;
-				margin-left: -80px;
-				font-size: 1.5em;
-				text-align: right;
-				line-height: 35px;
-			}
-			*/
 
 			&:last-child {
 				margin-bottom: 0;
 			}
 		}
 
+		span {
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			float: left;
+			width: 100%;
+			margin-top: 4px;
+		}
+
 		nav {
-			font-size: 0.8em;
+			position: absolute;
+			right: 0.5em;
+			top: 50%;
+			font-size: 14px;
+			margin-top: -7px;
 
 			a {
-				margin-right: 1em;
+				margin-right: 0.5em;
+				color: #ccc;
+				text-decoration: none;
+
+
+				&:last-child {
+					margin: 0;
+				}
+
+				&:hover {
+					color: #666;
+				}
 			}
 		}
 	}
