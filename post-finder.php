@@ -68,9 +68,9 @@ class NS_Post_Finder {
 	/**
 	 * Builds an input that lets the user find and order posts
 	 *
-	 * @param string Name of input
-	 * @param string Expecting comma seperated post ids
-	 * @param array Field options
+	 * @param string $name Name of input
+	 * @param string $value Expecting comma seperated post ids
+	 * @param array $options Field options
 	 */
 	public static function render( $name, $value, $options = array() ) {
 
@@ -90,11 +90,10 @@ class NS_Post_Finder {
 		));
 
 		// now that we have a post type, figure out the proper label
-		if ( is_array( $args['post_type'] ) ) {
+		if( is_array( $args['post_type'] ) ) {
 			$singular = 'Item';
 			$plural = 'Items';
-		}
-		elseif( $post_type = get_post_type_object( $args['post_type'] ) ) {
+		} elseif( $post_type = get_post_type_object( $args['post_type'] ) ) {
 			$singular = $post_type->labels->singular_name;
 			$plural = $post_type->labels->name;
 		} else {
@@ -250,11 +249,10 @@ class NS_Post_Finder {
 					$args['post_type'] = $_REQUEST['post_type'];
 			
 			}
-
-			
 		}
 
-		$posts = get_posts( $args );
+		// allow search args to be filtered
+		$posts = get_posts( apply_filters( 'post_finder_search_args', $args ) );
 
 		// Get the permalink so that View/Edit links work
 		foreach( $posts as $key => $post )
@@ -267,5 +265,12 @@ class NS_Post_Finder {
 	}
 }
 new NS_Post_Finder();
+
+/**
+ * Help function to render a post finder input
+ */
+function pf_render( $name, $value, $options = array() ) {
+	NS_Post_Finder::render( $name, $value, $options );
+}
 
 endif;
