@@ -8,6 +8,8 @@
  */
 
 if( !class_exists( 'NS_Post_Finder' ) ) :
+
+define( 'POST_FINDER_VERSION', '0.1' );
  
 /**
  * Namespacing the class with "NS" to ensure uniqueness
@@ -41,7 +43,7 @@ class NS_Post_Finder {
 				'jquery-ui-sortable',
 				'underscore'
 			),
-			time(),
+			POST_FINDER_VERSION,
 			true
 		);
 
