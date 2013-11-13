@@ -3,7 +3,7 @@
 
 .post-finder {
 
-	max-width: 600px;
+	/*max-width: 600px;*/
 
 	.list {
 
@@ -63,7 +63,7 @@
 
 			a {
 				margin-right: 0.5em;
-				color: #ccc;
+				color: #999;
 				text-decoration: none;
 
 
@@ -98,7 +98,8 @@
 		background: none;
 
 		input {
-			min-width: 60%;
+			width: 100%;
+			max-width: 400px;
 			margin-right: 1em;
 		}
 	}

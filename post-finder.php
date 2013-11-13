@@ -4,12 +4,12 @@
  * Plugin Name: Post Finder
  * Author: Micah Ernst
  * Description: Adds a UI for currating and ordering posts
- * Version: 0.1
+ * Version: 0.2
  */
 
 if( !class_exists( 'NS_Post_Finder' ) ) :
 
-define( 'POST_FINDER_VERSION', '0.1' );
+define( 'POST_FINDER_VERSION', '0.2' );
  
 /**
  * Namespacing the class with "NS" to ensure uniqueness
@@ -144,9 +144,9 @@ class NS_Post_Finder {
 								'<input type="text" size="3" maxlength="3" max="3" value="%s">' .
 								'<span>%s</span>' .
 								'<nav>' .
-									'<a href="%s" class="icon-pencil" target="_blank"></a>' .
-									'<a href="%s" class="icon-eye" target="_blank"></a>' .
-									'<a href="#" class="icon-remove"></a>' .
+									'<a href="%s" class="icon-pencil" target="_blank" title="Edit"></a>' .
+									'<a href="%s" class="icon-eye" target="_blank" title="View"></a>' .
+									'<a href="#" class="icon-remove" title="Remove"></a>' .
 								'</nav>' .
 							'</li>',
 							intval( $post->ID ),

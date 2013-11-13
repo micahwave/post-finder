@@ -3,9 +3,9 @@ var POST_FINDER_TEMPLATE = [
 		'<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">',
 		'<span><%= title %></span>',
 		'<nav>',
-			'<a href="<%= edit_url %>" class="icon-pencil" target="_blank"></a>',
-			'<a href="<%= permalink %>" class="icon-eye" target="_blank"></a>',
-			'<a href="#" class="icon-remove"></a>',
+			'<a href="<%= edit_url %>" class="icon-pencil" target="_blank" title="Edit"></a>',
+			'<a href="<%= permalink %>" class="icon-eye" target="_blank" title="View"></a>',
+			'<a href="#" class="icon-remove" title="Remove"></a>',
 		'</nav>',
 	'</li>'
 ].join('');
