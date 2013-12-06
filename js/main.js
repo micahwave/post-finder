@@ -1,21 +1,23 @@
-var POST_FINDER_TEMPLATE = [
-	'<li data-id="<%= id %>">',
-		'<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">',
-		'<span><%= title %></span>',
-		'<nav>',
-			'<a href="<%= edit_url %>" class="icon-pencil" target="_blank" title="Edit"></a>',
-			'<a href="<%= permalink %>" class="icon-eye" target="_blank" title="View"></a>',
-			'<a href="#" class="icon-remove" title="Remove"></a>',
-		'</nav>',
-	'</li>'
-].join('');
-
 (function($) {
+	var cache = {};
 
 	$.postFinder = function(element, options) {
+		var defaults, mainTemplate, itemTemplate;
 
-		var defaults = {
-			template : POST_FINDER_TEMPLATE,
+		if ( 'mainTemplate' in cache ) {
+			mainTemplate = cache['mainTemplate'];
+		} else {
+			mainTemplate = cache['mainTemplate'] = $('#tmpl-post-finder-main').html()
+		}
+
+		if ( 'itemTemplate' in cache ) {
+			itemTemplate = cache['itemTemplate'];
+		} else {
+			itemTemplate = cache['itemTemplate'] = $('#tmpl-post-finder-item').html()
+		}
+
+		defaults = {
+			template : mainTemplate,
 			fieldSelector : 'input[type=hidden]',
 			selectSelector : 'select',
 			listSelector : '.list',
@@ -214,12 +216,7 @@ var POST_FINDER_TEMPLATE = [
 				function(response) {
 					if( typeof response.posts != "undefined" ) {
 						for( var i in response.posts ) {
-							html += _.template([
-								'<li data-id="<%= ID %>" data-permalink="<%= permalink %>">',
-									'<a href="#" class="add">Add</a>',
-									'<span><%= post_title %></span>',
-								'</li>'
-							].join(''), response.posts[i]);
+							html += _.template(itemTemplate, response.posts[i]);
 						}
 						plugin.$results.html(html);
 					}
