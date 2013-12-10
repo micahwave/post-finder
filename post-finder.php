@@ -59,12 +59,51 @@ class NS_Post_Finder {
 	}
 	
 	/**
-	 * Make sure our nonce is on all admin pages
+	 * Make sure our nonce and JS templates are on all admin pages
 	 *
 	 * @return void
 	 */
 	function admin_footer() {
 		wp_nonce_field( 'post_finder', 'post_finder_nonce' );
+
+		$this->render_js_templates();
+	}
+
+	/**
+	 * Outputs JS templates for use.
+	 */
+	private function render_js_templates() {
+		$main_template = '<li data-id="<%= id %>">
+	<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">
+	<span><%= title %></span>
+	<nav>
+		<a href="<%= edit_url %>" class="icon-pencil" target="_blank" title="Edit"></a>
+		<a href="<%= permalink %>" class="icon-eye" target="_blank" title="View"></a>
+		<a href="#" class="icon-remove" title="Remove"></a>
+	</nav>
+</li>';
+
+		$item_template = '<li data-id="<%= ID %>" data-permalink="<%= permalink %>">
+	<a href="#" class="add">Add</a>
+	<span><%= post_title %></span>
+</li>';
+
+		// allow for filtering / overriding of templates
+		$main_template = apply_filters( 'post_finder_main_template', $main_template );
+		$item_template = apply_filters( 'post_finder_item_template', $item_template );
+?>
+
+<script type="text/html" id="tmpl-post-finder-main">
+<?php echo $main_template; ?>
+
+</script>
+
+<script type="text/html" id="tmpl-post-finder-item">
+<?php echo $item_template; ?>
+
+</script>
+
+<?php
 	}
 
 	/**
@@ -259,6 +298,8 @@ class NS_Post_Finder {
 		// Get the permalink so that View/Edit links work
 		foreach( $posts as $key => $post )
 			$posts[$key]->permalink = get_permalink( $post->ID );
+
+		$posts = apply_filters( 'post_finder_search_results', $posts );
 
 		if( $posts )
 			header("Content-type: text/json");
