@@ -301,9 +301,12 @@ class NS_Post_Finder {
 
 		$posts = apply_filters( 'post_finder_search_results', $posts );
 
-		if( $posts )
+		if( $posts ) {
 			header("Content-type: text/json");
 			die( json_encode( array( 'posts' => $posts ) ) );
+		} else {
+			die();
+		}
 		
 	}
 }
