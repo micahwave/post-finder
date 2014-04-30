@@ -120,6 +120,7 @@ class NS_Post_Finder {
 			'limit' => 10,
 			'include_script' => true, // Should the <script> tags to init post finder be included or not
 		));
+		$options = apply_filters( 'post_finder_render_options', $options );
 
 		// check to see if we have query args
 		$args = isset( $options['args'] ) ? $options['args'] : array();
