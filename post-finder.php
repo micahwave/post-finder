@@ -117,7 +117,8 @@ class NS_Post_Finder {
 
 		$options = wp_parse_args( $options, array(
 			'show_numbers' => true, // display # next to post
-			'limit' => 10
+			'limit' => 10,
+			'include_script' => true, // Should the <script> tags to init post finder be included or not
 		));
 
 		// check to see if we have query args
@@ -220,8 +221,10 @@ class NS_Post_Finder {
 				<ul class="results"></ul>
 			</div>
 		</div>
-		<script>jQuery(document).ready(function($){$('.post-finder').postFinder()});</script>
 		<?php
+		if ( $options['include_script'] ) {
+			?><script>jQuery(document).ready(function($){$('.post-finder').postFinder()});</script><?php
+		}
 	}
 
 	/**
