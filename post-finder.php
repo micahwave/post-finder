@@ -258,7 +258,7 @@ class NS_Post_Finder {
 					$args[$var] = sanitize_text_field( $_REQUEST[$var] );
 				}
 			}
-		}	
+		}
 
 		// this needs to be within a range
 		if( isset( $_REQUEST['posts_per_page'] ) ) {
@@ -293,6 +293,12 @@ class NS_Post_Finder {
 				if( in_array( $_REQUEST['post_type'], $post_types ) )
 					$args['post_type'] = $_REQUEST['post_type'];
 			
+			}
+		}
+
+		if ( isset( $_REQUEST['tax_query'] ) ) {
+			foreach( $_REQUEST['tax_query'] as $current_tax_query ) {
+				$args['tax_query'][] = array_map( 'sanitize_text_field', $current_tax_query );
 			}
 		}
 
