@@ -117,8 +117,10 @@ class NS_Post_Finder {
 
 		$options = wp_parse_args( $options, array(
 			'show_numbers' => true, // display # next to post
-			'limit' => 10
+			'limit' => 10,
+			'include_script' => true, // Should the <script> tags to init post finder be included or not
 		));
+		$options = apply_filters( 'post_finder_render_options', $options );
 
 		// check to see if we have query args
 		$args = isset( $options['args'] ) ? $options['args'] : array();
@@ -134,12 +136,15 @@ class NS_Post_Finder {
 		if( is_array( $args['post_type'] ) ) {
 			$singular = 'Item';
 			$plural = 'Items';
+			$singular_article = 'an';
 		} elseif( $post_type = get_post_type_object( $args['post_type'] ) ) {
 			$singular = $post_type->labels->singular_name;
 			$plural = $post_type->labels->name;
+			$singular_article = 'a';
 		} else {
 			$singular = 'Post';
 			$plural = 'Posts';
+			$singular_article = 'a';
 		}
 		
 		// get current selected posts if we have a value
@@ -206,7 +211,7 @@ class NS_Post_Finder {
 			<?php if( $recent_posts ) : ?>
 			<h4>Select a Recent <?php echo esc_html( $singular ); ?></h4>
 			<select>
-				<option value="0">Choose a <?php echo esc_html( $singular ); ?></option>
+				<option value="0">Choose <?php echo esc_html( $singular_article ); echo esc_html( $singular ); ?></option>
 				<?php foreach( $recent_posts as $post ) : ?>
 				<option value="<?php echo intval( $post->ID ); ?>" data-permalink="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( $post->post_title ); ?></option>
 				<?php endforeach; ?>
@@ -214,14 +219,16 @@ class NS_Post_Finder {
 			<?php endif; ?>
 		
 			<div class="search">
-				<h4>Search for a <?php echo esc_html( $singular ); ?></h4>
+				<h4>Search for <?php echo esc_html( $singular_article ); echo esc_html( $singular ); ?></h4>
 				<input type="text" placeholder="Enter a term or phrase">
 				<buttton class="button">Search</buttton>
 				<ul class="results"></ul>
 			</div>
 		</div>
-		<script>jQuery(document).ready(function($){$('.post-finder').postFinder()});</script>
 		<?php
+		if ( $options['include_script'] ) {
+			?><script>jQuery(document).ready(function($){$('.post-finder').postFinder()});</script><?php
+		}
 	}
 
 	/**
@@ -254,7 +261,7 @@ class NS_Post_Finder {
 					$args[$var] = sanitize_text_field( $_REQUEST[$var] );
 				}
 			}
-		}	
+		}
 
 		// this needs to be within a range
 		if( isset( $_REQUEST['posts_per_page'] ) ) {
@@ -292,6 +299,12 @@ class NS_Post_Finder {
 			}
 		}
 
+		if ( isset( $_REQUEST['tax_query'] ) ) {
+			foreach( $_REQUEST['tax_query'] as $current_tax_query ) {
+				$args['tax_query'][] = array_map( 'sanitize_text_field', $current_tax_query );
+			}
+		}
+
 		// allow search args to be filtered
 		$posts = get_posts( apply_filters( 'post_finder_search_args', $args ) );
 
@@ -301,9 +314,12 @@ class NS_Post_Finder {
 
 		$posts = apply_filters( 'post_finder_search_results', $posts );
 
-		if( $posts )
+		if( $posts ) {
 			header("Content-type: text/json");
 			die( json_encode( array( 'posts' => $posts ) ) );
+		} else {
+			die();
+		}
 		
 	}
 }
