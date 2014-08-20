@@ -234,9 +234,6 @@ class NS_Post_Finder {
 			<script type="text/javascript">
 				jQuery(document).ready(function($){
 					$('.post-finder').postFinder();
-					$('.post-finder').parent('form').on('submit', function(e){
-						e.preventDefault();
-					});
 				});
 			</script>
 			<?php
