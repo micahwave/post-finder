@@ -4,7 +4,7 @@
 	var cache = {};
 
 	$.postFinder = function(element, options) {
-		var defaults, mainTemplate, itemTemplate;
+		var defaults, mainTemplate, itemTemplate, $li;
 
 		if ( 'mainTemplate' in cache ) {
 			mainTemplate = cache['mainTemplate'];
