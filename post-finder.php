@@ -51,7 +51,10 @@ class NS_Post_Finder {
 			'post-finder',
 			'POST_FINDER_CONFIG',
 			array(
-				'adminurl' => admin_url(),
+				'adminurl'           => admin_url(),
+				'nothing_found'      => __( 'Nothing Found', 'post_finder' ),
+				'max_number_allowed' => __( 'Sorry, maximum number of items added.', 'post_finder' ),
+				'already_added'      => __( 'Sorry, that item has already been added.', 'post_finder' )
 			)
 		);
 
@@ -127,23 +130,23 @@ class NS_Post_Finder {
 
 		// setup some defaults
 		$args = wp_parse_args( $args, array(
-			'post_type' => 'post',
+			'post_type'      => 'post',
 			'posts_per_page' => 10,
-			'post_status' => 'publish'
+			'post_status'    => 'publish'
 		));
 
 		// now that we have a post type, figure out the proper label
 		if( is_array( $args['post_type'] ) ) {
-			$singular = 'Item';
-			$plural = 'Items';
+			$singular         = 'Item';
+			$plural           = 'Items';
 			$singular_article = 'an';
 		} elseif( $post_type = get_post_type_object( $args['post_type'] ) ) {
-			$singular = $post_type->labels->singular_name;
-			$plural = $post_type->labels->name;
+			$singular         = $post_type->labels->singular_name;
+			$plural           = $post_type->labels->name;
 			$singular_article = 'a';
 		} else {
-			$singular = 'Post';
-			$plural = 'Posts';
+			$singular         = 'Post';
+			$plural           = 'Posts';
 			$singular_article = 'a';
 		}
 		
@@ -153,10 +156,10 @@ class NS_Post_Finder {
 			$post_ids = array_map( 'intval', explode( ',', $value ) );
 
 			$posts = get_posts( array(
-				'post_type' => $args['post_type'],
-				'post_status' => $args['post_status'],
-				'post__in' => $post_ids,
-				'orderby' => 'post__in',
+				'post_type'      => $args['post_type'],
+				'post_status'    => $args['post_status'],
+				'post__in'       => $post_ids,
+				'orderby'        => 'post__in',
 				'posts_per_page' => count( $post_ids )
 			));
 		}
@@ -211,7 +214,7 @@ class NS_Post_Finder {
 			<?php if( $recent_posts ) : ?>
 			<h4>Select a Recent <?php echo esc_html( $singular ); ?></h4>
 			<select>
-				<option value="0">Choose <?php echo esc_html( $singular_article ); echo esc_html( $singular ); ?></option>
+				<option value="0">Choose <?php echo esc_html( $singular_article ) . ' ' . esc_html( $singular ); ?></option>
 				<?php foreach( $recent_posts as $post ) : ?>
 				<option value="<?php echo intval( $post->ID ); ?>" data-permalink="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( $post->post_title ); ?></option>
 				<?php endforeach; ?>
@@ -219,15 +222,24 @@ class NS_Post_Finder {
 			<?php endif; ?>
 		
 			<div class="search">
-				<h4>Search for <?php echo esc_html( $singular_article ); echo esc_html( $singular ); ?></h4>
+				<h4>Search for <?php echo esc_html( $singular_article ) . ' ' . esc_html( $singular ); ?></h4>
 				<input type="text" placeholder="Enter a term or phrase">
-				<buttton class="button">Search</buttton>
+				<button class="button">Search</button>
 				<ul class="results"></ul>
 			</div>
 		</div>
 		<?php
 		if ( $options['include_script'] ) {
-			?><script>jQuery(document).ready(function($){$('.post-finder').postFinder()});</script><?php
+			?>
+			<script type="text/javascript">
+				jQuery(document).ready(function($){
+					$('.post-finder').postFinder();
+					$('.post-finder').parent('form').on('submit', function(e){
+						e.preventDefault();
+					});
+				});
+			</script>
+			<?php
 		}
 	}
 
@@ -314,10 +326,8 @@ class NS_Post_Finder {
 
 		$posts = apply_filters( 'post_finder_search_results', $posts );
 
-		if( $posts )
-			header("Content-type: text/json");
-			die( json_encode( array( 'posts' => $posts ) ) );
-		
+		header("Content-type: text/json");
+		die( json_encode( array( 'posts' => $posts ) ) );
 	}
 }
 new NS_Post_Finder();

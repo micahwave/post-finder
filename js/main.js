@@ -1,4 +1,6 @@
-(function($) {
+(function(window, $, undefined) {
+	"use strict";
+
 	var cache = {};
 
 	$.postFinder = function(element, options) {
@@ -7,32 +9,32 @@
 		if ( 'mainTemplate' in cache ) {
 			mainTemplate = cache['mainTemplate'];
 		} else {
-			mainTemplate = cache['mainTemplate'] = $('#tmpl-post-finder-main').html()
+			mainTemplate = cache['mainTemplate'] = $('#tmpl-post-finder-main').html();
 		}
 
 		if ( 'itemTemplate' in cache ) {
 			itemTemplate = cache['itemTemplate'];
 		} else {
-			itemTemplate = cache['itemTemplate'] = $('#tmpl-post-finder-item').html()
+			itemTemplate = cache['itemTemplate'] = $('#tmpl-post-finder-item').html();
 		}
 
 		defaults = {
-			template : mainTemplate,
-			fieldSelector : 'input[type=hidden]',
-			selectSelector : 'select',
-			listSelector : '.list',
-			searchSelector : '.search',
-			resultsSelector : '.results',
-			querySelector : 'input[type=text]',
-			nonceSelector : '#post_finder_nonce'
-		}
+			template:        mainTemplate,
+			fieldSelector:   'input[type=hidden]',
+			selectSelector:  'select',
+			listSelector:    '.list',
+			searchSelector:  '.search',
+			resultsSelector: '.results',
+			querySelector:   'input[type=text]',
+			nonceSelector:   '#post_finder_nonce'
+		};
 
 		var plugin = this;
 
-		plugin.settings = {} //empty object to store extended settings
+		plugin.settings = {}; //empty object to store extended settings
 
 		var $element = $(element), //store jquery object of el
-			element = element; //store html el		
+			element  = element; //store html el		
 
 		plugin.init = function() {
 			
@@ -40,13 +42,13 @@
 			plugin.settings = $.extend({}, defaults, options); 
 			
 			// all jquery objects are fetched once and stored in the plugin object
-			plugin.$field = $element.find(plugin.settings.fieldSelector),
-			plugin.$select = $element.find(plugin.settings.selectSelector),
-			plugin.$list = $element.find(plugin.settings.listSelector),
-			plugin.$search = $element.find(plugin.settings.searchSelector),
+			plugin.$field   = $element.find(plugin.settings.fieldSelector),
+			plugin.$select  = $element.find(plugin.settings.selectSelector),
+			plugin.$list    = $element.find(plugin.settings.listSelector),
+			plugin.$search  = $element.find(plugin.settings.searchSelector),
 			plugin.$results = plugin.$search.find(plugin.settings.resultsSelector),
-			plugin.$query = plugin.$search.find(plugin.settings.querySelector),
-			plugin.nonce = $(plugin.settings.nonceSelector).val();
+			plugin.$query   = plugin.$search.find(plugin.settings.querySelector),
+			plugin.nonce    = $(plugin.settings.nonceSelector).val();
 
 			// bind select
 			plugin.$select.on('change', function(e){
@@ -56,6 +58,14 @@
 			// bind search button
 			plugin.$search.find('.button').click(function(){
 				plugin.search();
+			});
+			
+			// search on enter key press
+			plugin.$search.find('input[type="text"]').keypress(function(e){
+				if (e.which == 13) {
+					plugin.search();
+					return false;
+				}
 			});
 
 			// bind list
@@ -91,7 +101,7 @@
 			plugin.$list.on('blur', 'li input', function(e){
 				plugin.move_item( $(this).closest('li'), $(this).val() );
 			});
-		}
+		};
 
 		// move an element to a specific position if possible
 		plugin.move_item = function( $el, pos ) {
@@ -143,7 +153,7 @@
 
 			plugin.serialize();
 
-		}
+		};
 
 		plugin.add_item = function( id, title, permalink ) {//private method
 	
@@ -152,23 +162,23 @@
 				return;
 
 			if( plugin.$list.find('li').length >= $element.data('limit') ) {
-				alert('Sorry, maximum number of items added.');
+				alert( POST_FINDER_CONFIG.max_number_allowed );
 				return;
 			}
 
 			// see if item already exists
 			if( plugin.$list.find('li[data-id="' + id + '"]').length ) {
-				alert('Sorry, that item has already been added.');
+				alert( POST_FINDER_CONFIG.already_added );
 				return;
 			}
 
 			// add item
 			plugin.$list.append(_.template(plugin.settings.template, { 
-				id: id, 
-				title: title,
-				edit_url: POST_FINDER_CONFIG.adminurl + 'post.php?post=' + id + '&action=edit',
+				id:        id, 
+				title:     title,
+				edit_url:  POST_FINDER_CONFIG.adminurl + 'post.php?post=' + id + '&action=edit',
 				permalink: permalink,
-				pos: plugin.$list.length + 1
+				pos:       plugin.$list.length + 1
 			}));
 
 			// hide notice
@@ -179,7 +189,7 @@
 
 			// update the input
 			plugin.serialize();
-		}
+		};
 
 		//Prv method to remove an item
 		plugin.remove_item = function( id ) {
@@ -192,7 +202,7 @@
 			if( plugin.$list.find('li').length == 0 ) {
 				plugin.$list.find('.notice').show();
 			}
-		}
+		};
 
 		plugin.search = function() {
 		
@@ -215,14 +225,18 @@
 				data,
 				function(response) {
 					if( typeof response.posts != "undefined" ) {
-						for( var i in response.posts ) {
-							html += _.template(itemTemplate, response.posts[i]);
+						if ( response.posts.length > 0 ) {
+							for( var i in response.posts ) {
+								html += _.template(itemTemplate, response.posts[i]);
+							}
+						} else {
+							html = '<li>' + POST_FINDER_CONFIG.nothing_found + '</li>';
 						}
 						plugin.$results.html(html);
 					}
 				}
 			);
-		}
+		};
 
 		plugin.serialize = function() {
 			
@@ -239,7 +253,7 @@
 
 		plugin.init();
 
-	}
+	};
 
 	$.fn.postFinder = function(options) {
 
@@ -250,6 +264,6 @@
 			}
 		});
 
-	}
+	};
 
-})(jQuery);
+})(window, jQuery);
