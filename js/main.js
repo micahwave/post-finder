@@ -56,15 +56,16 @@
 			});
 
 			// bind search button
-			plugin.$search.find('.button').click(function(){
+			plugin.$search.find('.button').click(function(e){
+				e.preventDefault();
 				plugin.search();
 			});
 			
 			// search on enter key press
 			plugin.$search.find('input[type="text"]').keypress(function(e){
 				if (e.which == 13) {
+					e.preventDefault();
 					plugin.search();
-					return false;
 				}
 			});
 
