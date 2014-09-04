@@ -103,7 +103,7 @@ class NS_Post_Finder {
 		<script type="text/html" id="tmpl-post-finder-item">
 		<?php echo $item_template; ?>
 		</script>
-		
+
 		<?php
 	}
 
@@ -191,7 +191,7 @@ class NS_Post_Finder {
 							'</li>',
 							intval( $post->ID ),
 							intval( $i ),
-							esc_html( $post->post_title ),
+							esc_html( apply_filters( 'post_finder_item_label', $post->post_title, $post ) ),
 							get_edit_post_link( $post->ID ),
 							get_permalink( $post->ID )
 						);
@@ -209,7 +209,7 @@ class NS_Post_Finder {
 			<select>
 				<option value="0">Choose a <?php echo esc_html( $singular ); ?></option>
 				<?php foreach( $recent_posts as $post ) : ?>
-				<option value="<?php echo intval( $post->ID ); ?>" data-permalink="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( $post->post_title ); ?></option>
+				<option value="<?php echo intval( $post->ID ); ?>" data-permalink="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( apply_filters( 'post_finder_item_label', $post->post_title, $post ) ); ?></option>
 				<?php endforeach; ?>
 			</select>
 			<?php endif; ?>
