@@ -119,27 +119,19 @@
 
 				plugin.$list.prepend( $clone );
 
-				console.log( 'prepend li' );
-
 			// middle positions
 			} else if( pos > 1 && pos < len ) {
 				
 				plugin.$list.find('li').eq( pos - 1 ).before( $clone );
-				
-				console.log( 'insert li after pos' );
 
 			// last position
 			} else if( pos == len ) {
 
 				plugin.$list.append( $clone );
-
-				console.log( 'append li' );
 			}
 
 			// remove the original element
 			$el.remove();
-
-			console.log( 'move complete' );
 
 			plugin.serialize();
 
