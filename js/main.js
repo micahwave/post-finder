@@ -197,7 +197,7 @@
 				};
 
 			// merge the default args in
-			data = $.extend(data, $element.data('args'));
+			data = $.extend(data, args);
 			
 			// display loading
 			plugin.$search.addClass('loading');
