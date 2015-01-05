@@ -7,15 +7,15 @@
  * Version: 0.2
  */
 
-if( !class_exists( 'NS_Post_Finder' ) ) :
+if ( ! class_exists( 'NS_Post_Finder' ) ) :
 
 define( 'POST_FINDER_VERSION', '0.2' );
- 
+
 /**
  * Namespacing the class with "NS" to ensure uniqueness
  */
 class NS_Post_Finder {
-	
+
 	/**
 	 * Setup hooks
 	 *
@@ -52,15 +52,15 @@ class NS_Post_Finder {
 			'POST_FINDER_CONFIG',
 			array(
 				'adminurl'           => admin_url(),
-				'nothing_found'      => __( 'Nothing Found', 'post_finder' ),
-				'max_number_allowed' => __( 'Sorry, maximum number of items added.', 'post_finder' ),
-				'already_added'      => __( 'Sorry, that item has already been added.', 'post_finder' )
+				'nothing_found'      => esc_html__( 'Nothing Found', 'post_finder' ),
+				'max_number_allowed' => esc_html__( 'Sorry, maximum number of items added.', 'post_finder' ),
+				'already_added'      => esc_html__( 'Sorry, that item has already been added.', 'post_finder' )
 			)
 		);
 
 		wp_enqueue_style( 'post-finder', plugins_url( 'css/screen.css', __FILE__ ) );
 	}
-	
+
 	/**
 	 * Make sure our nonce and JS templates are on all admin pages
 	 *
@@ -76,7 +76,7 @@ class NS_Post_Finder {
 	 * Outputs JS templates for use.
 	 */
 	private function render_js_templates() {
-		$main_template = 
+		$main_template =
 			'<li data-id="<%= id %>">
 				<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">
 				<span><%= title %></span>
@@ -87,7 +87,7 @@ class NS_Post_Finder {
 				</nav>
 			</li>';
 
-		$item_template = 
+		$item_template =
 			'<li data-id="<%= ID %>" data-permalink="<%= permalink %>">
 				<a href="#" class="add">Add</a>
 				<span><%= post_title %></span>
@@ -96,7 +96,7 @@ class NS_Post_Finder {
 		// allow for filtering / overriding of templates
 		$main_template = apply_filters( 'post_finder_main_template', $main_template );
 		$item_template = apply_filters( 'post_finder_item_template', $item_template );
-		
+
 		?>
 
 		<script type="text/html" id="tmpl-post-finder-main">
@@ -120,8 +120,8 @@ class NS_Post_Finder {
 	public static function render( $name, $value, $options = array() ) {
 
 		$options = wp_parse_args( $options, array(
-			'show_numbers' => true, // display # next to post
-			'limit' => 10,
+			'show_numbers'   => true, // display # next to post
+			'limit'          => 10,
 			'include_script' => true, // Should the <script> tags to init post finder be included or not
 		));
 		$options = apply_filters( 'post_finder_render_options', $options );
@@ -131,9 +131,10 @@ class NS_Post_Finder {
 
 		// setup some defaults
 		$args = wp_parse_args( $args, array(
-			'post_type'      => 'post',
-			'posts_per_page' => 10,
-			'post_status'    => 'publish'
+			'post_type'        => 'post',
+			'posts_per_page'   => 10,
+			'post_status'      => 'publish',
+			'suppress_filters' => false
 		));
 
 		// now that we have a post type, figure out the proper label
@@ -150,25 +151,26 @@ class NS_Post_Finder {
 			$plural           = 'Posts';
 			$singular_article = 'a';
 		}
-		
+
 		// get current selected posts if we have a value
 		if( !empty( $value ) && is_string( $value ) ) {
 
 			$post_ids = array_map( 'intval', explode( ',', $value ) );
 
 			$posts = get_posts( array(
-				'post_type'      => $args['post_type'],
-				'post_status'    => $args['post_status'],
-				'post__in'       => $post_ids,
-				'orderby'        => 'post__in',
-				'posts_per_page' => count( $post_ids )
+				'post_type'        => $args['post_type'],
+				'post_status'      => $args['post_status'],
+				'post__in'         => $post_ids,
+				'orderby'          => 'post__in',
+				'suppress_filters' => false,
+				'posts_per_page'   => count( $post_ids )
 			));
 		}
 
 		// if we have some ids already, make sure they arent included in the recent posts
 		if( !empty( $post_ids ) ) {
 			$args['post__not_in'] = $post_ids;
-		} 
+		}
 
 		// get recent posts
 		$recent_posts = get_posts( apply_filters( 'post_finder_' . $name . '_recent_post_args', $args ) );
@@ -177,7 +179,7 @@ class NS_Post_Finder {
 
 		if( !$options['show_numbers'] )
 			$class .= ' no-numbers';
-		
+
 		?>
 		<div class="<?php echo esc_attr( $class ); ?>" data-limit="<?php echo intval( $options['limit'] ); ?>" data-args='<?php echo json_encode( $args ); ?>'>
 			<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
@@ -221,7 +223,7 @@ class NS_Post_Finder {
 				<?php endforeach; ?>
 			</select>
 			<?php endif; ?>
-		
+
 			<div class="search">
 				<h4>Search for <?php echo esc_html( $singular_article ) . ' ' . esc_html( $singular ); ?></h4>
 				<input type="text" placeholder="Enter a term or phrase">
@@ -247,7 +249,7 @@ class NS_Post_Finder {
 	 * @return void
 	 */
 	function search_posts() {
-		
+
 		check_ajax_referer( 'post_finder' );
 
 		if( !current_user_can( 'edit_posts' ) )
@@ -315,12 +317,14 @@ class NS_Post_Finder {
 			}
 		}
 
+		$args['suppress_filters'] = false;
+
 		// allow search args to be filtered
 		$posts = get_posts( apply_filters( 'post_finder_search_args', $args ) );
 
 		// Get the permalink so that View/Edit links work
 		foreach( $posts as $key => $post )
-			$posts[$key]->permalink = get_permalink( $post->ID );
+			$posts[ $key ]->permalink = get_permalink( $post->ID );
 
 		$posts = apply_filters( 'post_finder_search_results', $posts );
 
