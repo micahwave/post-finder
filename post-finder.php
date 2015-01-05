@@ -73,6 +73,35 @@ class NS_Post_Finder {
 	}
 
 	/**
+	 * A variant of wp_kses() that's safe for escaping Underscores templates.
+	 *
+	 * This acts as a wrapper around wp_kses(), first replacing common Underscores template tags with
+	 * attribute-safe strings, then restoring the Underscores template tags when wp_kses() has run
+	 * through all of $string.
+	 *
+	 * @param str   $string            Content to run through kses.
+	 * @param array $allowed_html      Allowed HTML elements.
+	 * @param array $allowed_protocols Allowed protocol in links.
+	 * @return str The Underscores-ready template.
+	 */
+	public function underscores_safe_kses( $string, $allowed_html, $allowed_protocols = array() ) {
+
+		// Escape Underscores
+		$string = str_replace( '<%= ', '__UNDERSCORES_OPEN_ECHO_TAG__', $string );
+		$string = str_replace( '<% ', '__UNDERSCORES_OPEN_TAG__', $string );
+		$string = str_replace( ' %>', '__UNDERSCORES_CLOSE_TAG__', $string );
+
+		$string = wp_kses( $string, $allowed_html, $allowed_protocols );
+
+		// Restore Underscores
+		$string = str_replace( '__UNDERSCORES_OPEN_ECHO_TAG__', '<%= ', $string );
+		$string = str_replace( '__UNDERSCORES_OPEN_TAG__', '<% ', $string );
+		$string = str_replace( '__UNDERSCORES_CLOSE_TAG__', ' %>', $string );
+
+		return $string;
+	}
+
+	/**
 	 * Outputs JS templates for use.
 	 */
 	private function render_js_templates() {
@@ -96,15 +125,36 @@ class NS_Post_Finder {
 		// allow for filtering / overriding of templates
 		$main_template = apply_filters( 'post_finder_main_template', $main_template );
 		$item_template = apply_filters( 'post_finder_item_template', $item_template );
+		$allowed_html = array(
+			'li' => array(
+				'data-id' => true,
+				'data-permalink' => true
+			),
+			'input' => array(
+				'type' => true,
+				'size' => true,
+				'maxlength' => true,
+				'max' => true,
+				'value' => true
+			),
+			'a' => array(
+				'href' => true,
+				'class' => true,
+				'target' => true,
+				'title' => true
+			),
+			'nav' => array(),
+			'span' => array()
+		);
 
 		?>
 
 		<script type="text/html" id="tmpl-post-finder-main">
-		<?php echo $main_template; ?>
+		<?php echo $this->underscores_safe_kses( $main_template, $allowed_html ); ?>
 		</script>
 
 		<script type="text/html" id="tmpl-post-finder-item">
-		<?php echo $item_template; ?>
+		<?php echo $this->underscores_safe_kses( $item_template, $allowed_html ); ?>
 		</script>
 
 		<?php
