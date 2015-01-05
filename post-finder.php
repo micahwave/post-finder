@@ -264,19 +264,19 @@ class NS_Post_Finder {
 
 		// clean the basic vars
 		foreach( $vars as $var ) {
-			if( isset( $_REQUEST[$var] ) ) {
-				if( is_array( $_REQUEST[$var] ) ) {
-					$args[$var] = array_map( 'sanitize_text_field', $_REQUEST[$var] );
+			if( isset( $_POST[ $var ] ) ) {
+				if( is_array( $_POST[ $var ] ) ) {
+					$args[$var] = array_map( 'sanitize_text_field', $_POST[ $var ] );
 				} else {
-					$args[$var] = sanitize_text_field( $_REQUEST[$var] );
+					$args[$var] = sanitize_text_field( $_POST[ $var ] );
 				}
 			}
 		}
 
 		// this needs to be within a range
-		if( isset( $_REQUEST['posts_per_page'] ) ) {
+		if( isset( $_POST['posts_per_page'] ) ) {
 
-			$num = intval( $_REQUEST['posts_per_page'] );
+			$num = intval( $_POST['posts_per_page'] );
 
 			if( $num <= 0 ) {
 				$num = 10;
@@ -288,13 +288,13 @@ class NS_Post_Finder {
 		}
 
 		// handle post type validation differently
-		if( isset( $_REQUEST['post_type'] ) ) {
+		if( isset( $_POST['post_type'] ) ) {
 
 			$post_types = get_post_types( array( 'public' => true ) );
 
-			if( is_array( $_REQUEST['post_type'] ) ) {
+			if( is_array( $_POST['post_type'] ) ) {
 
-				foreach( $_REQUEST['post_type'] as $type ) {
+				foreach( $_POST['post_type'] as $type ) {
 
 					if( in_array( $type, $post_types ) ) {
 						$args['post_type'][] = $type;
@@ -303,14 +303,14 @@ class NS_Post_Finder {
 
 			} else {
 
-				if( in_array( $_REQUEST['post_type'], $post_types ) )
-					$args['post_type'] = $_REQUEST['post_type'];
-			
+				if( in_array( $_POST['post_type'], $post_types ) )
+					$args['post_type'] = $_POST['post_type'];
+
 			}
 		}
 
-		if ( isset( $_REQUEST['tax_query'] ) ) {
-			foreach( $_REQUEST['tax_query'] as $current_tax_query ) {
+		if ( isset( $_POST['tax_query'] ) ) {
+			foreach( $_POST['tax_query'] as $current_tax_query ) {
 				$args['tax_query'][] = array_map( 'sanitize_text_field', $current_tax_query );
 			}
 		}
