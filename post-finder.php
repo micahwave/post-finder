@@ -7,15 +7,15 @@
  * Version: 0.2
  */
 
-if( !class_exists( 'NS_Post_Finder' ) ) :
+if ( ! class_exists( 'NS_Post_Finder' ) ) :
 
 define( 'POST_FINDER_VERSION', '0.2' );
- 
+
 /**
  * Namespacing the class with "NS" to ensure uniqueness
  */
 class NS_Post_Finder {
-	
+
 	/**
 	 * Setup hooks
 	 *
@@ -52,15 +52,15 @@ class NS_Post_Finder {
 			'POST_FINDER_CONFIG',
 			array(
 				'adminurl'           => admin_url(),
-				'nothing_found'      => __( 'Nothing Found', 'post_finder' ),
-				'max_number_allowed' => __( 'Sorry, maximum number of items added.', 'post_finder' ),
-				'already_added'      => __( 'Sorry, that item has already been added.', 'post_finder' )
+				'nothing_found'      => esc_html__( 'Nothing Found', 'post_finder' ),
+				'max_number_allowed' => esc_html__( 'Sorry, maximum number of items added.', 'post_finder' ),
+				'already_added'      => esc_html__( 'Sorry, that item has already been added.', 'post_finder' )
 			)
 		);
 
 		wp_enqueue_style( 'post-finder', plugins_url( 'css/screen.css', __FILE__ ) );
 	}
-	
+
 	/**
 	 * Make sure our nonce and JS templates are on all admin pages
 	 *
@@ -73,10 +73,39 @@ class NS_Post_Finder {
 	}
 
 	/**
+	 * A variant of wp_kses() that's safe for escaping Underscores templates.
+	 *
+	 * This acts as a wrapper around wp_kses(), first replacing common Underscores template tags with
+	 * attribute-safe strings, then restoring the Underscores template tags when wp_kses() has run
+	 * through all of $string.
+	 *
+	 * @param str   $string            Content to run through kses.
+	 * @param array $allowed_html      Allowed HTML elements.
+	 * @param array $allowed_protocols Allowed protocol in links.
+	 * @return str The Underscores-ready template.
+	 */
+	public function underscores_safe_kses( $string, $allowed_html, $allowed_protocols = array() ) {
+
+		// Escape Underscores
+		$string = str_replace( '<%= ', '__UNDERSCORES_OPEN_ECHO_TAG__', $string );
+		$string = str_replace( '<% ', '__UNDERSCORES_OPEN_TAG__', $string );
+		$string = str_replace( ' %>', '__UNDERSCORES_CLOSE_TAG__', $string );
+
+		$string = wp_kses( $string, $allowed_html, $allowed_protocols );
+
+		// Restore Underscores
+		$string = str_replace( '__UNDERSCORES_OPEN_ECHO_TAG__', '<%= ', $string );
+		$string = str_replace( '__UNDERSCORES_OPEN_TAG__', '<% ', $string );
+		$string = str_replace( '__UNDERSCORES_CLOSE_TAG__', ' %>', $string );
+
+		return $string;
+	}
+
+	/**
 	 * Outputs JS templates for use.
 	 */
 	private function render_js_templates() {
-		$main_template = 
+		$main_template =
 			'<li data-id="<%= id %>">
 				<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">
 				<span><%= title %></span>
@@ -87,7 +116,7 @@ class NS_Post_Finder {
 				</nav>
 			</li>';
 
-		$item_template = 
+		$item_template =
 			'<li data-id="<%= ID %>" data-permalink="<%= permalink %>">
 				<a href="#" class="add">Add</a>
 				<span><%= post_title %></span>
@@ -96,15 +125,36 @@ class NS_Post_Finder {
 		// allow for filtering / overriding of templates
 		$main_template = apply_filters( 'post_finder_main_template', $main_template );
 		$item_template = apply_filters( 'post_finder_item_template', $item_template );
-		
+		$allowed_html = array(
+			'li' => array(
+				'data-id' => true,
+				'data-permalink' => true
+			),
+			'input' => array(
+				'type' => true,
+				'size' => true,
+				'maxlength' => true,
+				'max' => true,
+				'value' => true
+			),
+			'a' => array(
+				'href' => true,
+				'class' => true,
+				'target' => true,
+				'title' => true
+			),
+			'nav' => array(),
+			'span' => array()
+		);
+
 		?>
 
 		<script type="text/html" id="tmpl-post-finder-main">
-		<?php echo $main_template; ?>
+		<?php echo $this->underscores_safe_kses( $main_template, $allowed_html ); ?>
 		</script>
 
 		<script type="text/html" id="tmpl-post-finder-item">
-		<?php echo $item_template; ?>
+		<?php echo $this->underscores_safe_kses( $item_template, $allowed_html ); ?>
 		</script>
 
 		<?php
@@ -120,8 +170,8 @@ class NS_Post_Finder {
 	public static function render( $name, $value, $options = array() ) {
 
 		$options = wp_parse_args( $options, array(
-			'show_numbers' => true, // display # next to post
-			'limit' => 10,
+			'show_numbers'   => true, // display # next to post
+			'limit'          => 10,
 			'include_script' => true, // Should the <script> tags to init post finder be included or not
 		));
 		$options = apply_filters( 'post_finder_render_options', $options );
@@ -131,9 +181,10 @@ class NS_Post_Finder {
 
 		// setup some defaults
 		$args = wp_parse_args( $args, array(
-			'post_type'      => 'post',
-			'posts_per_page' => 10,
-			'post_status'    => 'publish'
+			'post_type'        => 'post',
+			'posts_per_page'   => 10,
+			'post_status'      => 'publish',
+			'suppress_filters' => false
 		));
 
 		// now that we have a post type, figure out the proper label
@@ -150,25 +201,26 @@ class NS_Post_Finder {
 			$plural           = 'Posts';
 			$singular_article = 'a';
 		}
-		
+
 		// get current selected posts if we have a value
 		if( !empty( $value ) && is_string( $value ) ) {
 
 			$post_ids = array_map( 'intval', explode( ',', $value ) );
 
 			$posts = get_posts( array(
-				'post_type'      => $args['post_type'],
-				'post_status'    => $args['post_status'],
-				'post__in'       => $post_ids,
-				'orderby'        => 'post__in',
-				'posts_per_page' => count( $post_ids )
+				'post_type'        => $args['post_type'],
+				'post_status'      => $args['post_status'],
+				'post__in'         => $post_ids,
+				'orderby'          => 'post__in',
+				'suppress_filters' => false,
+				'posts_per_page'   => count( $post_ids )
 			));
 		}
 
 		// if we have some ids already, make sure they arent included in the recent posts
 		if( !empty( $post_ids ) ) {
 			$args['post__not_in'] = $post_ids;
-		} 
+		}
 
 		// get recent posts
 		$recent_posts = get_posts( apply_filters( 'post_finder_' . $name . '_recent_post_args', $args ) );
@@ -177,7 +229,7 @@ class NS_Post_Finder {
 
 		if( !$options['show_numbers'] )
 			$class .= ' no-numbers';
-		
+
 		?>
 		<div class="<?php echo esc_attr( $class ); ?>" data-limit="<?php echo intval( $options['limit'] ); ?>" data-args='<?php echo json_encode( $args ); ?>'>
 			<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
@@ -221,7 +273,7 @@ class NS_Post_Finder {
 				<?php endforeach; ?>
 			</select>
 			<?php endif; ?>
-		
+
 			<div class="search">
 				<h4>Search for <?php echo esc_html( $singular_article ) . ' ' . esc_html( $singular ); ?></h4>
 				<input type="text" placeholder="Enter a term or phrase">
@@ -247,7 +299,7 @@ class NS_Post_Finder {
 	 * @return void
 	 */
 	function search_posts() {
-		
+
 		check_ajax_referer( 'post_finder' );
 
 		if( !current_user_can( 'edit_posts' ) )
@@ -264,19 +316,19 @@ class NS_Post_Finder {
 
 		// clean the basic vars
 		foreach( $vars as $var ) {
-			if( isset( $_REQUEST[$var] ) ) {
-				if( is_array( $_REQUEST[$var] ) ) {
-					$args[$var] = array_map( 'sanitize_text_field', $_REQUEST[$var] );
+			if( isset( $_POST[ $var ] ) ) {
+				if( is_array( $_POST[ $var ] ) ) {
+					$args[$var] = array_map( 'sanitize_text_field', $_POST[ $var ] );
 				} else {
-					$args[$var] = sanitize_text_field( $_REQUEST[$var] );
+					$args[$var] = sanitize_text_field( $_POST[ $var ] );
 				}
 			}
 		}
 
 		// this needs to be within a range
-		if( isset( $_REQUEST['posts_per_page'] ) ) {
+		if( isset( $_POST['posts_per_page'] ) ) {
 
-			$num = intval( $_REQUEST['posts_per_page'] );
+			$num = intval( $_POST['posts_per_page'] );
 
 			if( $num <= 0 ) {
 				$num = 10;
@@ -288,13 +340,13 @@ class NS_Post_Finder {
 		}
 
 		// handle post type validation differently
-		if( isset( $_REQUEST['post_type'] ) ) {
+		if( isset( $_POST['post_type'] ) ) {
 
 			$post_types = get_post_types( array( 'public' => true ) );
 
-			if( is_array( $_REQUEST['post_type'] ) ) {
+			if( is_array( $_POST['post_type'] ) ) {
 
-				foreach( $_REQUEST['post_type'] as $type ) {
+				foreach( $_POST['post_type'] as $type ) {
 
 					if( in_array( $type, $post_types ) ) {
 						$args['post_type'][] = $type;
@@ -303,24 +355,26 @@ class NS_Post_Finder {
 
 			} else {
 
-				if( in_array( $_REQUEST['post_type'], $post_types ) )
-					$args['post_type'] = $_REQUEST['post_type'];
-			
+				if( in_array( $_POST['post_type'], $post_types ) )
+					$args['post_type'] = $_POST['post_type'];
+
 			}
 		}
 
-		if ( isset( $_REQUEST['tax_query'] ) ) {
-			foreach( $_REQUEST['tax_query'] as $current_tax_query ) {
+		if ( isset( $_POST['tax_query'] ) ) {
+			foreach( $_POST['tax_query'] as $current_tax_query ) {
 				$args['tax_query'][] = array_map( 'sanitize_text_field', $current_tax_query );
 			}
 		}
+
+		$args['suppress_filters'] = false;
 
 		// allow search args to be filtered
 		$posts = get_posts( apply_filters( 'post_finder_search_args', $args ) );
 
 		// Get the permalink so that View/Edit links work
 		foreach( $posts as $key => $post )
-			$posts[$key]->permalink = get_permalink( $post->ID );
+			$posts[ $key ]->permalink = get_permalink( $post->ID );
 
 		$posts = apply_filters( 'post_finder_search_results', $posts );
 
