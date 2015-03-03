@@ -10,11 +10,17 @@
 if( !class_exists( 'NS_Post_Finder' ) ) :
 
 define( 'POST_FINDER_VERSION', '0.2' );
+define( 'POST_FINDER_URL', plugins_url( '', __FILE__ ) );
  
 /**
  * Namespacing the class with "NS" to ensure uniqueness
  */
 class NS_Post_Finder {
+
+	/**
+	 * Store the plugin url so we can filter it
+	 */
+	var $plugin_url;
 	
 	/**
 	 * Setup hooks
@@ -34,9 +40,11 @@ class NS_Post_Finder {
 	 */
 	function scripts() {
 
+		$this->plugins_url = apply_filters( 'post_finder_plugins_url', POST_FINDER_URL );
+
 		wp_enqueue_script(
 			'post-finder',
-			plugins_url( 'js/main.js', __FILE__ ),
+			$this->plugins_url . 'js/main.js',
 			array(
 				'jquery',
 				'jquery-ui-draggable',
@@ -55,7 +63,7 @@ class NS_Post_Finder {
 			)
 		);
 
-		wp_enqueue_style( 'post-finder', plugins_url( 'css/screen.css', __FILE__ ) );
+		wp_enqueue_style( 'post-finder', $this->plugins_url . 'css/screen.css' );
 	}
 	
 	/**
