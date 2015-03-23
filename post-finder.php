@@ -173,8 +173,8 @@ class NS_Post_Finder {
 		// allow args to be filtered
 		$args = apply_filters( 'post_finder_' . $name . '_recent_post_args', $args );
 
-		// prevent posts_per_page from exceeding 100
-		if( !empty( $args['posts_per_page'] ) && $args['posts_per_page'] > 100 )
+		// prevent posts_per_page from exceeding 100 or being less than 1
+		if( !empty( $args['posts_per_page'] ) && ( $args['posts_per_page'] > 100 || $args['posts_per_page'] < 1 ) )
 			$args['posts_per_page'] = 100;
 
 		// get recent posts
