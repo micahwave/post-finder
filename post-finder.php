@@ -168,10 +168,17 @@ class NS_Post_Finder {
 		// if we have some ids already, make sure they arent included in the recent posts
 		if( !empty( $post_ids ) ) {
 			$args['post__not_in'] = $post_ids;
-		} 
+		}
+
+		// allow args to be filtered
+		$args = apply_filters( 'post_finder_' . $name . '_recent_post_args', $args );
+
+		// prevent posts_per_page from exceeding 100
+		if( !empty( $args['posts_per_page'] ) && $args['posts_per_page'] > 100 )
+			$args['posts_per_page'] = 100;
 
 		// get recent posts
-		$recent_posts = get_posts( apply_filters( 'post_finder_' . $name . '_recent_post_args', $args ) );
+		$recent_posts = get_posts( $args );
 
 		$class = 'post-finder';
 
@@ -200,8 +207,8 @@ class NS_Post_Finder {
 							intval( $post->ID ),
 							intval( $i ),
 							esc_html( apply_filters( 'post_finder_item_label', $post->post_title, $post ) ),
-							get_edit_post_link( $post->ID ),
-							get_permalink( $post->ID )
+							esc_url( get_edit_post_link( $post->ID ) ),
+							esc_url( get_permalink( $post->ID ) )
 						);
 						$i++;
 					}
@@ -256,19 +263,19 @@ class NS_Post_Finder {
 
 		// clean the basic vars
 		foreach( $vars as $var ) {
-			if( isset( $_REQUEST[$var] ) ) {
-				if( is_array( $_REQUEST[$var] ) ) {
-					$args[$var] = array_map( 'sanitize_text_field', $_REQUEST[$var] );
+			if( isset( $_GET[$var] ) ) {
+				if( is_array( $_GET[$var] ) ) {
+					$args[$var] = array_map( 'sanitize_text_field', $_GET[$var] );
 				} else {
-					$args[$var] = sanitize_text_field( $_REQUEST[$var] );
+					$args[$var] = sanitize_text_field( $_GET[$var] );
 				}
 			}
 		}	
 
 		// this needs to be within a range
-		if( isset( $_REQUEST['posts_per_page'] ) ) {
+		if( isset( $_GET['posts_per_page'] ) ) {
 
-			$num = intval( $_REQUEST['posts_per_page'] );
+			$num = intval( $_GET['posts_per_page'] );
 
 			if( $num <= 0 ) {
 				$num = 10;
@@ -280,23 +287,23 @@ class NS_Post_Finder {
 		}
 
 		// handle post type validation differently
-		if( isset( $_REQUEST['post_type'] ) ) {
+		if( isset( $_GET['post_type'] ) ) {
 
 			$post_types = get_post_types( array( 'public' => true ) );
 
-			if( is_array( $_REQUEST['post_type'] ) ) {
+			if( is_array( $_GET['post_type'] ) ) {
 
-				foreach( $_REQUEST['post_type'] as $type ) {
+				foreach( $_GET['post_type'] as $type ) {
 
-					if( in_array( $type, $post_types ) ) {
+					if( in_array( $type, $post_types, true ) ) {
 						$args['post_type'][] = $type;
 					}
 				}
 
 			} else {
 
-				if( in_array( $_REQUEST['post_type'], $post_types ) )
-					$args['post_type'] = $_REQUEST['post_type'];
+				if( in_array( $_GET['post_type'], $post_types, true ) )
+					$args['post_type'] = $_GET['post_type'];
 			
 			}
 		}
@@ -311,8 +318,7 @@ class NS_Post_Finder {
 		$posts = apply_filters( 'post_finder_search_results', $posts );
 
 		if( $posts )
-			header("Content-type: text/json");
-			die( json_encode( array( 'posts' => $posts ) ) );
+			wp_send_json( array( 'posts' => $posts ) );
 		
 	}
 }
