@@ -1,0 +1,18 @@
+{
+    "name": "10up/post-finder",
+    "type": "wordpress-plugin",
+    "description": "Adds a UI for curating and ordering posts",
+    "authors": [
+        {
+            "name": "10up",
+            "homepage": "http://10up.com"
+        },
+        {
+            "name": "Micah Ernst",
+            "homepage": "https://github.com/micahwave/"
+        }
+    ],
+    "require": {
+        "composer/installers": "~1.0"
+    }
+}
