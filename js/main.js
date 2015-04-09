@@ -212,20 +212,24 @@
 			// display loading
 			plugin.$search.addClass('loading');
 
-			$.getJSON(
+			$.ajax(
 				ajaxurl,
-				data,
-				function(response) {
-					if( typeof response.posts != "undefined" ) {
-						if ( response.posts.length > 0 ) {
-							for( var i in response.posts ) {
-								html += _.template(itemTemplate, response.posts[i]);
+				{
+					type: 'POST',
+					data: data,
+					success: function(response) {
+						if( typeof response.posts != "undefined" ) {
+							if ( response.posts.length > 0 ) {
+								for( var i in response.posts ) {
+									html += _.template(itemTemplate, response.posts[i]);
+								}
+							} else {
+								html = '<li>' + POST_FINDER_CONFIG.nothing_found + '</li>';
 							}
-						} else {
-							html = '<li>' + POST_FINDER_CONFIG.nothing_found + '</li>';
+							plugin.$results.html(html);
 						}
-						plugin.$results.html(html);
-					}
+					},
+					dataType: 'json'
 				}
 			);
 		};
