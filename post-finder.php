@@ -41,7 +41,7 @@ class NS_Post_Finder {
 				'jquery',
 				'jquery-ui-draggable',
 				'jquery-ui-sortable',
-				'underscore'
+				'underscore',
 			),
 			POST_FINDER_VERSION,
 			true
@@ -128,20 +128,20 @@ class NS_Post_Finder {
 		$allowed_html = array(
 			'li' => array(
 				'data-id' => true,
-				'data-permalink' => true
+				'data-permalink' => true,
 			),
 			'input' => array(
 				'type' => true,
 				'size' => true,
 				'maxlength' => true,
 				'max' => true,
-				'value' => true
+				'value' => true,
 			),
 			'a' => array(
 				'href' => true,
 				'class' => true,
 				'target' => true,
-				'title' => true
+				'title' => true,
 			),
 			'nav' => array(),
 			'span' => array()
@@ -150,11 +150,19 @@ class NS_Post_Finder {
 		?>
 
 		<script type="text/html" id="tmpl-post-finder-main">
-		<?php echo $this->underscores_safe_kses( $main_template, $allowed_html ); ?>
+		<?php
+		// @codingStandardsIgnoreStart
+		// Ignoring because this output is filterd in underscores_safe_kses()
+		echo $this->underscores_safe_kses( $main_template, $allowed_html );
+		// @codingStandardsIgnoreEnd ?>
 		</script>
 
 		<script type="text/html" id="tmpl-post-finder-item">
-		<?php echo $this->underscores_safe_kses( $item_template, $allowed_html ); ?>
+		<?php
+		// @codingStandardsIgnoreStart
+		// Ignoring because this output is filterd in underscores_safe_kses()
+		echo $this->underscores_safe_kses( $item_template, $allowed_html );
+		// @codingStandardsIgnoreEnd ?>
 		</script>
 
 		<?php
@@ -184,7 +192,7 @@ class NS_Post_Finder {
 			'post_type'        => 'post',
 			'posts_per_page'   => 10,
 			'post_status'      => 'publish',
-			'suppress_filters' => false
+			'suppress_filters' => false,
 		));
 
 		// now that we have a post type, figure out the proper label
@@ -227,11 +235,12 @@ class NS_Post_Finder {
 
 		$class = 'post-finder';
 
-		if( !$options['show_numbers'] )
+		if( !$options['show_numbers'] ) {
 			$class .= ' no-numbers';
+		}
 
 		?>
-		<div class="<?php echo esc_attr( $class ); ?>" data-limit="<?php echo intval( $options['limit'] ); ?>" data-args='<?php echo json_encode( $args ); ?>'>
+		<div class="<?php echo esc_attr( $class ); ?>" data-limit="<?php echo intval( $options['limit'] ); ?>" data-args='<?php echo wp_json_encode( $args ); ?>'>
 			<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
 			<ul class="list">
 				<?php
@@ -252,8 +261,8 @@ class NS_Post_Finder {
 							intval( $post->ID ),
 							intval( $i ),
 							esc_html( apply_filters( 'post_finder_item_label', $post->post_title, $post ) ),
-							get_edit_post_link( $post->ID ),
-							get_permalink( $post->ID )
+							esc_url( get_edit_post_link( $post->ID ) ),
+							esc_url( get_permalink( $post->ID ) )
 						);
 						$i++;
 					}
@@ -302,8 +311,9 @@ class NS_Post_Finder {
 
 		check_ajax_referer( 'post_finder' );
 
-		if( !current_user_can( 'edit_posts' ) )
+		if( !current_user_can( 'edit_posts' ) ) {
 			return;
+		}
 
 		// possible vars we'll except
 		$vars = array(
@@ -355,8 +365,9 @@ class NS_Post_Finder {
 
 			} else {
 
-				if( in_array( $_POST['post_type'], $post_types ) )
+				if( in_array( $_POST['post_type'], $post_types ) ) {
 					$args['post_type'] = $_POST['post_type'];
+				}
 
 			}
 		}
@@ -373,13 +384,14 @@ class NS_Post_Finder {
 		$posts = get_posts( apply_filters( 'post_finder_search_args', $args ) );
 
 		// Get the permalink so that View/Edit links work
-		foreach( $posts as $key => $post )
+		foreach( $posts as $key => $post ) {
 			$posts[ $key ]->permalink = get_permalink( $post->ID );
+		}
 
 		$posts = apply_filters( 'post_finder_search_results', $posts );
 
-		header("Content-type: text/json");
-		die( json_encode( array( 'posts' => $posts ) ) );
+		header('Content-type: text/json');
+		die( wp_json_encode( array( 'posts' => $posts ) ) );
 	}
 }
 new NS_Post_Finder();
