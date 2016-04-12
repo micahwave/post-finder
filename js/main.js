@@ -150,6 +150,8 @@
 
 		plugin.add_item = function( id, title, permalink ) {//private method
 
+			var template = _.template( plugin.settings.template );
+
 			// make sure we have an id
 			if( id == 0 )
 				return;
@@ -166,13 +168,13 @@
 			}
 
 			// add item
-			plugin.$list.append(_.template(plugin.settings.template, {
+			plugin.$list.append( template( {
 				id:        id,
 				title:     title,
 				edit_url:  POST_FINDER_CONFIG.adminurl + 'post.php?post=' + id + '&action=edit',
 				permalink: permalink,
 				pos:       plugin.$list.length + 1
-			}));
+			} ) );
 
 			// hide notice
 			plugin.$list.find('.notice').hide();
@@ -204,7 +206,8 @@
 					action: 'pf_search_posts',
 					s: plugin.$query.val(),
 					_ajax_nonce: plugin.nonce
-				};
+				},
+				template = _.template( itemTemplate );
 
 			// merge the default args in
 			data = $.extend(data, $element.data('args'));
@@ -221,7 +224,7 @@
 						if( typeof response.posts != "undefined" ) {
 							if ( response.posts.length > 0 ) {
 								for( var i in response.posts ) {
-									html += _.template(itemTemplate, response.posts[i]);
+									html += template( response.posts[i] );
 								}
 							} else {
 								html = '<li>' + POST_FINDER_CONFIG.nothing_found + '</li>';
