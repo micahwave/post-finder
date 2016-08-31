@@ -146,6 +146,7 @@ class NS_Post_Finder {
 			'nav' => array(),
 			'span' => array()
 		);
+		$allowed_html = apply_filters( 'post_finder_allowed_html', $allowed_html );
 
 		?>
 
