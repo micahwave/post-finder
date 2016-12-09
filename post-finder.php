@@ -297,7 +297,7 @@ class NS_Post_Finder {
 			?>
 			<script type="text/javascript">
 				jQuery(document).ready(function($){
-					jQuery('.post-finder').postFinder();
+					$('.post-finder').postFinder();
 				});
 			</script>
 			<?php
