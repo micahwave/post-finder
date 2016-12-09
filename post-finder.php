@@ -24,6 +24,7 @@ class NS_Post_Finder {
 	function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
 		add_action( 'admin_footer', array( $this, 'admin_footer' ) );
+		add_action( 'customize_controls_print_footer_scripts', array( $this, 'admin_footer' ) );
 		add_action( 'wp_ajax_pf_search_posts', array( $this, 'search_posts' ) );
 	}
 
