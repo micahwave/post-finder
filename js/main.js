@@ -21,6 +21,7 @@
 		defaults = {
 			template:        mainTemplate,
 			fieldSelector:   'input[type=hidden]',
+			typesfieldSelector: 'input#types[type=hidden]',
 			selectSelector:  'select',
 			listSelector:    '.list',
 			searchSelector:  '.search',
@@ -42,13 +43,14 @@
 			plugin.settings = $.extend({}, defaults, options);
 
 			// all jquery objects are fetched once and stored in the plugin object
-			plugin.$field   = $element.find(plugin.settings.fieldSelector),
-			plugin.$select  = $element.find(plugin.settings.selectSelector),
-			plugin.$list    = $element.find(plugin.settings.listSelector),
-			plugin.$search  = $element.find(plugin.settings.searchSelector),
-			plugin.$results = plugin.$search.find(plugin.settings.resultsSelector),
-			plugin.$query   = plugin.$search.find(plugin.settings.querySelector),
-			plugin.nonce    = $(plugin.settings.nonceSelector).val();
+			plugin.$field     = $element.find(plugin.settings.fieldSelector),
+			plugin.$typefield = $element.find(plugin.settings.typesfieldSelector),
+			plugin.$select    = $element.find(plugin.settings.selectSelector),
+			plugin.$list      = $element.find(plugin.settings.listSelector),
+			plugin.$search    = $element.find(plugin.settings.searchSelector),
+			plugin.$results   = plugin.$search.find(plugin.settings.resultsSelector),
+			plugin.$query     = plugin.$search.find(plugin.settings.querySelector),
+			plugin.nonce      = $(plugin.settings.nonceSelector).val();
 
 			// bind select
 			plugin.$select.on('change', function(e){
@@ -238,16 +240,24 @@
 		};
 
 		plugin.serialize = function() {
-
-			var ids = [], i = 1;
+			var ids = [],
+				types = [],
+				i = 1;
 
 			plugin.$list.find('li').each(function(){
 				$(this).find('input').val(i);
 				ids.push( $(this).data('id') );
+				types.push( $(this).data('type') );
 				i++;
 			});
 
 			plugin.$field.val( ids.join(',') );
+			plugin.$typefield.val( types.join(',') );
+
+			$( document ).trigger( 'updatePostfinder', {
+				'idField': plugin.$field,
+				'typeField': plugin.$typefield
+			} );
 		}
 
 		plugin.init();
