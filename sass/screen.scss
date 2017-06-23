@@ -4,6 +4,7 @@
 
 	h4 {
 		font-size: 13px;
+		color: #444;
 	}
 
 	/*max-width: 600px;*/
@@ -57,11 +58,11 @@
 		nav {
 			position: absolute;
 			right: 0.5em;
-			top: 30%;
+			top: 28%;
 			font-size: 13px;
 
 			a {
-				padding: 0 8px 0 3px;
+				padding: 0 8px 1px 3px;
 				text-decoration: none;
 				border-right: 1px solid #999;
 
@@ -74,7 +75,6 @@
 				}
 
 				&:last-child {
-					margin: 0;
 					border: none;
 				}
 			}
