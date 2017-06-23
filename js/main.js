@@ -80,7 +80,7 @@
 			});
 
 			// remove button
-			plugin.$list.on('click', '.icon-remove', function(e){
+			plugin.$list.on('click', '.delete', function(e){
 				e.preventDefault();
 				plugin.remove_item( $(this).closest('li').data('id') );
 			});
