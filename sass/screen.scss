@@ -103,8 +103,13 @@
 
 		input {
 			width: 100%;
-			max-width: 400px;
-			margin-right: 1em;
+			max-width: calc(100% - 78px);
+			margin-right: 0.5em;
+			padding: 5px;
+		}
+
+		.button {
+			margin-top: 1px;
 		}
 	}
 
