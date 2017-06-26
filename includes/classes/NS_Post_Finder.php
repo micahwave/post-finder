@@ -125,15 +125,15 @@ class NS_Post_Finder {
 				<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">
 				<span><%= title %></span>
 				<nav>
-					<a href="<%= edit_url %>" class="edit" target="_blank" title="Edit">'. esc_html__( 'Edit', 'post-finder' ) .'</a>
-					<a href="<%= permalink %>" class="view" target="_blank" title="View">'. esc_html__( 'View', 'post-finder' ) .'</a>
-					<a href="#" class="delete" title="Remove">'. esc_html__( 'Remove', 'post-finder' ) .'</a>
+					<a href="<%= edit_url %>" class="edit" target="_blank" title="Edit">' . esc_html__( 'Edit', 'post-finder' ) . '</a>
+					<a href="<%= permalink %>" class="view" target="_blank" title="View">' . esc_html__( 'View', 'post-finder' ) . '</a>
+					<a href="#" class="delete" title="Remove">' . esc_html__( 'Remove', 'post-finder' ) . '</a>
 				</nav>
 			</li>';
 
 		$item_template =
 			'<li data-id="<%= ID %>" data-permalink="<%= permalink %>">
-				<a href="#" class="add">'. esc_html__( 'Add', 'post-finder' ) .'</a>
+				<a href="#" class="add">' . esc_html__( 'Add', 'post-finder' ) . '</a>
 				<span><%= post_title %></span>
 			</li>';
 
@@ -307,7 +307,7 @@ class NS_Post_Finder {
 						<?php esc_html_e( sprintf( 'Choose %s', $singular_article . ' ' . $singular ), 'post-finder' ); ?>
 					</option>
 
-					<?php foreach( $recent_posts as $post ) : ?>
+					<?php foreach ( $recent_posts as $post ) : ?>
 						<option value="<?php echo intval( $post->ID ); ?>" data-permalink="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>">
 							<?php
 							/**
@@ -366,7 +366,7 @@ class NS_Post_Finder {
 						$i++;
 					}
 				} else {
-					echo '<p class="notice">'. esc_html__( sprintf( 'No %s added', $plural ), 'post-finder' ) .'</p>';
+					echo '<p class="notice">' . esc_html__( sprintf( 'No %s added', $plural ), 'post-finder' ) . '</p>';
 				}
 				?>
 			</ul>
@@ -421,7 +421,7 @@ class NS_Post_Finder {
 
 			if ( $num <= 0 ) {
 				$num = 10;
-			} elseif( $num > 100 ) {
+			} elseif ( $num > 100 ) {
 				$num = 100;
 			}
 
@@ -447,7 +447,7 @@ class NS_Post_Finder {
 
 		// Sanitize tax_queries
 		if ( isset( $_POST['tax_query'] ) ) {
-			foreach( $_POST['tax_query'] as $current_tax_query ) {
+			foreach ( $_POST['tax_query'] as $current_tax_query ) {
 				$args['tax_query'][] = array_map( 'sanitize_text_field', $current_tax_query );
 			}
 		}
