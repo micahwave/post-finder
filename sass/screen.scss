@@ -1,41 +1,42 @@
 @import "compass/css3";
-@import "icons";
 
 .post-finder {
+
+	h4 {
+		font-size: 13px;
+		color: #444;
+	}
 
 	/*max-width: 600px;*/
 
 	.list {
+		background: #fbfbfb;
+		margin: 0 0 1em;
+		padding: 1em;
+		border: 1px solid #ccc;
 
 		.notice {
 			text-align: center;
 			margin: 0;
+			padding: 10px;
 		}
 
-		background: #eee;
-		margin: 0;
-		padding: 1em;
-		border: 1px solid #ccc;
-		margin-bottom: 1em;
-
 		li {
+			background-color: #FFF;
 			border: 1px solid #ccc;
-			@include border-radius(0.75em);
-			@include background(linear-gradient(top, #eee, #ddd));
 			cursor: move;
 			margin-bottom: 1em;
 			list-style: none;
-			margin-left: 55px;
+			margin-left: 50px;
 			text-align: left;
 			position: relative;
 			height: 40px;
-			padding: 0.5em;
-			padding-right: 70px;
+			padding: 0.5em 12em 0.5em 0.5em;
 			@include box-sizing(border-box);
 
 			input[type=text] {
 				position: absolute;
-				margin-left: -65px;
+				margin-left: -60px;
 				text-align: center;
 				padding: 2px 3px;
 			}
@@ -51,28 +52,30 @@
 			overflow: hidden;
 			float: left;
 			width: 100%;
-			margin-top: 4px;
+			margin: 4px 0 0 4px;
 		}
 
 		nav {
 			position: absolute;
 			right: 0.5em;
-			top: 50%;
-			font-size: 14px;
-			margin-top: -7px;
+			top: 28%;
+			font-size: 13px;
 
 			a {
-				margin-right: 0.5em;
-				color: #999;
+				padding: 0 8px 1px 3px;
 				text-decoration: none;
+				border-right: 1px solid #999;
 
+				&.delete {
+					color: #a00;
 
-				&:last-child {
-					margin: 0;
+					&:hover {
+						color: #f00;
+					}
 				}
 
-				&:hover {
-					color: #666;
+				&:last-child {
+					border: none;
 				}
 			}
 		}
@@ -94,25 +97,39 @@
 	}
 
 	.search {
-		
+
 		background: none;
+		font-size: 14px;
 
 		input {
 			width: 100%;
-			max-width: 400px;
-			margin-right: 1em;
+			max-width: calc(100% - 78px);
+			margin-right: 0.5em;
+			padding: 5px;
+		}
+
+		.button {
+			margin-top: 1px;
 		}
 	}
 
 	.results {
+		> :nth-child(2n+1) {
+			background-color: #f9f9f9;
+		}
 
 		li {
-			padding: 0.5em 1em;
-			border-bottom: 1px dotted #ccc;
+			padding: 10px 15px;
+
+			&.next {
+				background: none;
+				margin-bottom: 40px;
+			}
 		}
 
 		a {
 			float: right;
+			text-decoration: none;
 		}
 	}
 }
