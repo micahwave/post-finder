@@ -1,12 +1,12 @@
-#Post Finder
+# Post Finder
 
 Creates a rich input field that allows a user to curate and rank content items (posts or other custom post types)
 
-##Installation
+## Installation
 
 Clone the plugin to your `wp-content/plugins/` directory
 
-##Usage
+## Usage
 
 In your theme, you can call `pf_render( $name, $value, $options )` where you want to display a Post Finder field.
 
