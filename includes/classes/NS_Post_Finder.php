@@ -125,7 +125,7 @@ class NS_Post_Finder {
 				<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">
 				<span><%= title %></span>
 				<nav>
-					<a href="<%= edit_url %>" class="edit" target="_blank" title="Edit">' . esc_html__( 'Edit', 'post-finder' ) . '</a>
+					<a href="<%= editUrl %>" class="edit" target="_blank" title="Edit">' . esc_html__( 'Edit', 'post-finder' ) . '</a>
 					<a href="<%= permalink %>" class="view" target="_blank" title="View">' . esc_html__( 'View', 'post-finder' ) . '</a>
 					<a href="#" class="delete" title="Remove">' . esc_html__( 'Remove', 'post-finder' ) . '</a>
 				</nav>
