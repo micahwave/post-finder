@@ -126,7 +126,7 @@ class NS_Post_Finder {
 				<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">
 				<span><%= title %></span>
 				<nav>
-					<a href="<%= edit_url %>" class="edit" target="_blank" title="Edit">' . esc_html__( 'Edit', 'post-finder' ) . '</a>
+					<a href="<%= editUrl %>" class="edit" target="_blank" title="Edit">' . esc_html__( 'Edit', 'post-finder' ) . '</a>
 					<a href="<%= permalink %>" class="view" target="_blank" title="View">' . esc_html__( 'View', 'post-finder' ) . '</a>
 					<a href="#" class="delete" title="Remove">' . esc_html__( 'Remove', 'post-finder' ) . '</a>
 				</nav>
@@ -263,14 +263,19 @@ class NS_Post_Finder {
 		if ( ! empty( $value ) && is_string( $value ) ) {
 			$post_ids = array_map( 'intval', explode( ',', $value ) );
 
-			$posts = get_posts( array(
+			$posts = new WP_Query( array(
 				'post_type'        => $args['post_type'],
 				'post_status'      => $args['post_status'],
 				'post__in'         => $post_ids,
 				'orderby'          => 'post__in',
 				'suppress_filters' => false,
-				'posts_per_page'   => count( $post_ids )
+				'posts_per_page'   => count( $post_ids ),
 			) );
+
+			$posts = $posts->have_posts() ? $posts->posts : array();
+			wp_reset_postdata();
+		} else {
+			$posts = array();
 		}
 
 		// if we have some ids already, make sure they aren't included in the recent posts
