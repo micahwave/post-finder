@@ -461,7 +461,8 @@ class NS_Post_Finder {
 		 *
 		 * @param array $args Current search args.
 		 */
-		$posts = get_posts( apply_filters( 'post_finder_search_args', $args ) );
+		$posts = new WP_Query( apply_filters( 'post_finder_search_args', $args ) );
+		$posts = $posts->have_posts() ? $posts->posts : array();
 
 		// Get the permalink so that View/Edit links work
 		foreach ( $posts as $key => $post ) {
@@ -476,6 +477,8 @@ class NS_Post_Finder {
 		 * @param array $posts Found posts.
 		 */
 		$posts = apply_filters( 'post_finder_search_results', $posts );
+
+		wp_reset_postdata();
 
 		header( 'Content-type: text/json' );
 		die( wp_json_encode( array( 'posts' => $posts ) ) );
