@@ -235,7 +235,7 @@
 
 								// If we have 10 results, show the Next button
 								if ( 10 === response.posts.length ) {
-									html += '<li class="next"><a href="#" class="button" data-page="'+ nextPage +'">Next</a></li>';
+									html += '<li class="next"><a href="#" class="button" data-page="'+ nextPage +'">' + POST_FINDER_CONFIG.next + '</a></li>';
 								}
 							} else {
 								html = '<li>' + POST_FINDER_CONFIG.nothing_found + '</li>';

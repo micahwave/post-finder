@@ -57,7 +57,8 @@ class NS_Post_Finder {
 				'adminurl'           => admin_url(),
 				'nothing_found'      => esc_html__( 'Nothing Found', 'post_finder' ),
 				'max_number_allowed' => esc_html__( 'Sorry, maximum number of items added.', 'post_finder' ),
-				'already_added'      => esc_html__( 'Sorry, that item has already been added.', 'post_finder' )
+				'already_added'      => esc_html__( 'Sorry, that item has already been added.', 'post_finder' ),
+				'next'               => esc_html__( 'Next', 'post_finder' ),
 			)
 		);
 

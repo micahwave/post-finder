@@ -25,26 +25,30 @@ msgstr ""
 msgid "Sorry, that item has already been added."
 msgstr ""
 
-#: includes/classes/NS_Post_Finder.php:128
-#: includes/classes/NS_Post_Finder.php:360
-msgid "Edit"
+#: includes/classes/NS_Post_Finder.php:61
+msgid "Next"
 msgstr ""
 
 #: includes/classes/NS_Post_Finder.php:129
 #: includes/classes/NS_Post_Finder.php:362
-msgid "View"
+msgid "Edit"
 msgstr ""
 
 #: includes/classes/NS_Post_Finder.php:130
-#: includes/classes/NS_Post_Finder.php:363
+#: includes/classes/NS_Post_Finder.php:364
+msgid "View"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:131
+#: includes/classes/NS_Post_Finder.php:365
 msgid "Remove"
 msgstr ""
 
-#: includes/classes/NS_Post_Finder.php:136
+#: includes/classes/NS_Post_Finder.php:137
 msgid "Add"
 msgstr ""
 
-#: includes/classes/NS_Post_Finder.php:334
+#: includes/classes/NS_Post_Finder.php:335
 msgid "Search"
 msgstr ""
 
