@@ -58,18 +58,18 @@
 			});
 
 			// bind search button
-			plugin.$search.find('.button').click(function(e){
+			plugin.$search.on( 'click', '.button', function( e ) {
 				e.preventDefault();
-				plugin.search();
-			});
+				plugin.search( e );
+			} );
 
 			// search on enter key press
-			plugin.$search.find('input[type="text"]').keypress(function(e){
-				if (e.which == 13) {
+			plugin.$search.on( 'keypress', 'input[type="text"]', function( e ) {
+				if ( e.which === 13 ) {
 					e.preventDefault();
-					plugin.search();
+					plugin.search( e );
 				}
-			});
+			} );
 
 			// bind list
 			plugin.$list.sortable({
@@ -201,14 +201,17 @@
 			}
 		};
 
-		plugin.search = function() {
+		plugin.search = function( e ) {
 
 			var html = '',
+				page = e.currentTarget.getAttribute('data-page') ? +e.currentTarget.getAttribute('data-page') : 1,
 				data = {
 					action: 'pf_search_posts',
 					s: plugin.$query.val(),
+					page: page,
 					_ajax_nonce: plugin.nonce
 				},
+				nextPage = page + 1,
 				template = _.template( itemTemplate );
 
 			// merge the default args in
@@ -222,19 +225,29 @@
 				{
 					type: 'POST',
 					data: data,
+					dataType: 'json',
 					success: function(response) {
 						if( typeof response.posts != "undefined" ) {
 							if ( response.posts.length > 0 ) {
 								for( var i in response.posts ) {
 									html += template( response.posts[i] );
 								}
+
+								// If we have 10 results, show the Next button
+								if ( 10 === response.posts.length ) {
+									html += '<li class="next"><a href="#" class="button" data-page="'+ nextPage +'">Next</a></li>';
+								}
 							} else {
 								html = '<li>' + POST_FINDER_CONFIG.nothing_found + '</li>';
 							}
+
+							// Hide Loader
+							plugin.$search.removeClass('loading');
+
+							// Show results
 							plugin.$results.html(html);
 						}
-					},
-					dataType: 'json'
+					}
 				}
 			);
 		};

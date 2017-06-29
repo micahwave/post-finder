@@ -332,6 +332,7 @@ class NS_Post_Finder {
 				</h4>
 				<input type="text" placeholder="Enter a term or phrase">
 				<button class="button"><?php esc_html_e( 'Search', 'post-finder' ); ?></button>
+				<div class="loader"></div>
 				<ul class="results"></ul>
 			</div><!-- ./search -->
 
@@ -398,6 +399,7 @@ class NS_Post_Finder {
 		// possible vars we'll accept
 		$vars = array(
 			's',
+			'page',
 			'post_parent',
 			'post_status',
 		);
@@ -412,6 +414,16 @@ class NS_Post_Finder {
 				} else {
 					$args[ $var ] = sanitize_text_field( $_POST[ $var ] );
 				}
+			}
+		}
+
+		// Make sure our page value is above 1
+		if ( isset( $_POST['page'] ) ) {
+			unset( $args['page'] );
+			$paged = absint( $_POST['page'] );
+
+			if ( $paged > 1 ) {
+				$args['paged'] = $paged;
 			}
 		}
 
