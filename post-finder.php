@@ -35,9 +35,11 @@ class NS_Post_Finder {
 	 */
 	function scripts() {
 
+		$post_fix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+
 		wp_enqueue_script(
 			'post-finder',
-			plugins_url( 'js/main.js', __FILE__ ),
+			plugins_url( "assets/js/post-finder$post_fix.js", __FILE__ ),
 			array(
 				'jquery',
 				'jquery-ui-draggable',
@@ -59,7 +61,7 @@ class NS_Post_Finder {
 			)
 		);
 
-		wp_enqueue_style( 'post-finder', plugins_url( 'css/screen.css', __FILE__ ) );
+		wp_enqueue_style( 'post-finder', plugins_url( "assets/css/post-finder$post_fix.css", __FILE__ ) );
 	}
 
 	/**

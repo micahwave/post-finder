@@ -1,0 +1,40 @@
+{
+  "name": "post-finder",
+  "title": "Post Finder",
+  "description": "Adds a UI for curating and ordering posts",
+  "version": "0.2",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "authors": [
+    {
+      "name": "10up",
+      "url": "http://10up.com"
+    },
+    {
+      "name": "Micah Ernst",
+      "url": "https://github.com/micahwave/"
+    }
+  ],
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-sass": "^1.0.0",
+    "autoprefixer": "^6.0.0",
+    "grunt-postcss": "^0.6.0",
+    "grunt-contrib-cssmin": "^0.12.3",
+    "grunt-eslint": "^18.1.0",
+    "grunt-jscs": "^2.8.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-compress": "^0.13.0",
+    "load-grunt-config": "~0.17.2",
+    "load-grunt-tasks": "^3.3.0",
+    "glob": "~5.0.15",
+    "grunt-wp-readme-to-markdown": "^0.9.0"
+  },
+  "keywords": []
+}
