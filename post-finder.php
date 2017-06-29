@@ -5,6 +5,8 @@
  * Author: Micah Ernst
  * Description: Adds a UI for currating and ordering posts
  * Version: 0.2
+ * Text Domain: post-finder
+ * Domain Path: /languages
  */
 
 if ( ! class_exists( 'NS_Post_Finder' ) ) :
@@ -22,10 +24,20 @@ class NS_Post_Finder {
 	 * @return void
 	 */
 	function __construct() {
+		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
 		add_action( 'admin_footer', array( $this, 'admin_footer' ) );
 		add_action( 'customize_controls_print_footer_scripts', array( $this, 'admin_footer' ) );
 		add_action( 'wp_ajax_pf_search_posts', array( $this, 'search_posts' ) );
+	}
+
+	/**
+	 * Load the plugins textdomain.
+	 *
+	 * @return void
+	 */
+	function load_textdomain() {
+		load_plugin_textdomain( 'post-finder', false, plugin_basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
@@ -55,9 +67,9 @@ class NS_Post_Finder {
 			'POST_FINDER_CONFIG',
 			array(
 				'adminurl'           => admin_url(),
-				'nothing_found'      => esc_html__( 'Nothing Found', 'post_finder' ),
-				'max_number_allowed' => esc_html__( 'Sorry, maximum number of items added.', 'post_finder' ),
-				'already_added'      => esc_html__( 'Sorry, that item has already been added.', 'post_finder' )
+				'nothing_found'      => esc_html__( 'Nothing Found', 'post-finder' ),
+				'max_number_allowed' => esc_html__( 'Sorry, maximum number of items added.', 'post-finder' ),
+				'already_added'      => esc_html__( 'Sorry, that item has already been added.', 'post-finder' )
 			)
 		);
 
