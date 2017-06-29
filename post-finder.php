@@ -111,9 +111,9 @@ class NS_Post_Finder {
 				<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">
 				<span><%= title %></span>
 				<nav>
-					<a href="<%= edit_url %>" class="icon-pencil" target="_blank" title="Edit"></a>
-					<a href="<%= permalink %>" class="icon-eye" target="_blank" title="View"></a>
-					<a href="#" class="icon-remove" title="Remove"></a>
+					<a href="<%= edit_url %>" class="edit" target="_blank" title="Edit">Edit</a>
+					<a href="<%= permalink %>" class="view" target="_blank" title="View">View</a>
+					<a href="#" class="delete" title="Remove">Remove</a>
 				</nav>
 			</li>';
 
@@ -243,6 +243,23 @@ class NS_Post_Finder {
 
 		?>
 		<div class="<?php echo esc_attr( $class ); ?>" data-limit="<?php echo intval( $options['limit'] ); ?>" data-args='<?php echo wp_json_encode( $args ); ?>'>
+			<?php if( $recent_posts ) : ?>
+			<h4>Select a Recent <?php echo esc_html( $singular ); ?></h4>
+			<select>
+				<option value="0">Choose <?php echo esc_html( $singular_article ) . ' ' . esc_html( $singular ); ?></option>
+				<?php foreach( $recent_posts as $post ) : ?>
+				<option value="<?php echo intval( $post->ID ); ?>" data-permalink="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( apply_filters( 'post_finder_item_label', $post->post_title, $post ) ); ?></option>
+				<?php endforeach; ?>
+			</select>
+			<?php endif; ?>
+
+			<div class="search">
+				<h4>Search for <?php echo esc_html( $singular_article ) . ' ' . esc_html( $singular ); ?></h4>
+				<input type="text" placeholder="Enter a term or phrase">
+				<button class="button">Search</button>
+				<ul class="results"></ul>
+			</div>
+
 			<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
 			<ul class="list">
 				<?php
@@ -255,9 +272,9 @@ class NS_Post_Finder {
 								'<input type="text" size="3" maxlength="3" max="3" value="%s">' .
 								'<span>%s</span>' .
 								'<nav>' .
-									'<a href="%s" class="icon-pencil" target="_blank" title="Edit"></a>' .
-									'<a href="%s" class="icon-eye" target="_blank" title="View"></a>' .
-									'<a href="#" class="icon-remove" title="Remove"></a>' .
+									'<a href="%s" class="edit" target="_blank" title="Edit">Edit</a>' .
+									'<a href="%s" class="view" target="_blank" title="View">View</a>' .
+									'<a href="#" class="delete" title="Remove">Remove</a>' .
 								'</nav>' .
 							'</li>',
 							intval( $post->ID ),
@@ -275,22 +292,6 @@ class NS_Post_Finder {
 				?>
 			</ul>
 
-			<?php if( $recent_posts ) : ?>
-			<h4>Select a Recent <?php echo esc_html( $singular ); ?></h4>
-			<select>
-				<option value="0">Choose <?php echo esc_html( $singular_article ) . ' ' . esc_html( $singular ); ?></option>
-				<?php foreach( $recent_posts as $post ) : ?>
-				<option value="<?php echo intval( $post->ID ); ?>" data-permalink="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( apply_filters( 'post_finder_item_label', $post->post_title, $post ) ); ?></option>
-				<?php endforeach; ?>
-			</select>
-			<?php endif; ?>
-
-			<div class="search">
-				<h4>Search for <?php echo esc_html( $singular_article ) . ' ' . esc_html( $singular ); ?></h4>
-				<input type="text" placeholder="Enter a term or phrase">
-				<button class="button">Search</button>
-				<ul class="results"></ul>
-			</div>
 		</div>
 		<?php
 		if ( $options['include_script'] ) {
