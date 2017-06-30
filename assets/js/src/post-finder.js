@@ -1,6 +1,6 @@
 'use strict';
 
-/* global POST_FINDER_CONFIG, ajaxurl, _ */
+/* global POST_FINDER_CONFIG, pfPerPage, ajaxurl, _ */
 
 ( function( window, $, _, undefined ) {
 
@@ -245,8 +245,8 @@
 									html += template( response.posts[ i ] );
 								}
 
-								// If we have 10 results, show the Next button
-								if ( response.posts.length === 10 ) {
+								// If the # of results equals our per page setting (default 10), show the Next button
+								if ( response.posts.length === pfPerPage ) {
 									html += '<li class="next">';
 									html += '<a href="#" class="button" data-page="' + nextPage + '">';
 									html += POST_FINDER_CONFIG.next;

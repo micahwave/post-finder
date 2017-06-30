@@ -30,17 +30,17 @@ msgid "Next"
 msgstr ""
 
 #: includes/classes/NS_Post_Finder.php:129
-#: includes/classes/NS_Post_Finder.php:362
+#: includes/classes/NS_Post_Finder.php:367
 msgid "Edit"
 msgstr ""
 
 #: includes/classes/NS_Post_Finder.php:130
-#: includes/classes/NS_Post_Finder.php:364
+#: includes/classes/NS_Post_Finder.php:369
 msgid "View"
 msgstr ""
 
 #: includes/classes/NS_Post_Finder.php:131
-#: includes/classes/NS_Post_Finder.php:365
+#: includes/classes/NS_Post_Finder.php:370
 msgid "Remove"
 msgstr ""
 
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: includes/classes/NS_Post_Finder.php:335
+#: includes/classes/NS_Post_Finder.php:340
 msgid "Search"
 msgstr ""
 
@@ -62,4 +62,35 @@ msgstr ""
 
 #. Author of the plugin/theme
 msgid "Micah Ernst, 10up"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:249
+msgctxt "Singular item label"
+msgid "Item"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:250
+msgctxt "Plural item label"
+msgid "Items"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:251
+msgctxt "Singular article"
+msgid "an"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:255
+#: includes/classes/NS_Post_Finder.php:259
+msgctxt "Singular article"
+msgid "a"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:257
+msgctxt "Singular post type label"
+msgid "Post"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:258
+msgctxt "Plural post type label"
+msgid "Posts"
 msgstr ""

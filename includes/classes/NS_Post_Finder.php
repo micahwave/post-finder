@@ -246,17 +246,17 @@ class NS_Post_Finder {
 
 		// now that we have a post type, figure out the proper label
 		if ( is_array( $args['post_type'] ) ) {
-			$singular         = 'Item';
-			$plural           = 'Items';
-			$singular_article = 'an';
+			$singular         = esc_html_x( 'Item', 'Singular item label', 'post-finder' );
+			$plural           = esc_html_x( 'Items', 'Plural item label', 'post-finder' );
+			$singular_article = esc_html_x( 'an', 'Singular article', 'post-finder' );
 		} elseif ( $post_type = get_post_type_object( $args['post_type'] ) ) {
 			$singular         = $post_type->labels->singular_name;
 			$plural           = $post_type->labels->name;
-			$singular_article = 'a';
+			$singular_article = esc_html_x( 'a', 'Singular article', 'post-finder' );
 		} else {
-			$singular         = 'Post';
-			$plural           = 'Posts';
-			$singular_article = 'a';
+			$singular         = esc_html_x( 'Post', 'Singular post type label', 'post-finder' );
+			$plural           = esc_html_x( 'Posts', 'Plural post type label', 'post-finder' );
+			$singular_article = esc_html_x( 'a', 'Singular article', 'post-finder' );
 		}
 
 		// get current selected posts if we have a value
@@ -380,11 +380,20 @@ class NS_Post_Finder {
 		</div><!-- /.post-finder -->
 
 		<?php if ( $options['include_script'] ) : ?>
+
 			<script type="text/javascript">
+				var pfPerPage = <?php echo absint( $args['posts_per_page'] ); ?>;
 				jQuery( document ).ready( function( $ ) {
 					$( '.post-finder' ).postFinder();
 				} );
 			</script>
+
+		<?php else : ?>
+
+			<script type="text/javascript">
+				var pfPerPage = <?php echo absint( $args['posts_per_page'] ); ?>;
+			</script>
+
 		<?php endif;
 	}
 
