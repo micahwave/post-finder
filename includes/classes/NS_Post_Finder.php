@@ -304,12 +304,12 @@ class NS_Post_Finder {
 
 				<h4>
 					<label for="post-finder-recent">
-						<?php esc_html_e( sprintf( 'Select a Recent %s', $singular ), 'post-finder' ); ?>
+						<?php echo esc_html( sprintf( __( 'Select a Recent %s', 'post-finder' ), $singular ) ); ?>
 					</label>
 				</h4>
 				<select name="post-finder-recent" id="post-finder-recent">
 					<option value="0">
-						<?php esc_html_e( sprintf( 'Choose %s', $singular_article . ' ' . $singular ), 'post-finder' ); ?>
+						<?php echo esc_html( sprintf( __( 'Choose %s', 'post-finder' ), $singular_article . ' ' . $singular ) ); ?>
 					</option>
 
 					<?php foreach ( $recent_posts as $post ) : ?>
@@ -333,9 +333,9 @@ class NS_Post_Finder {
 
 			<div class="search">
 				<h4>
-					<?php esc_html_e( sprintf( 'Search for %s', $singular_article . ' ' . $singular ), 'post-finder' ); ?>
+					<?php echo esc_html( sprintf( __( 'Search for %s', 'post-finder' ), $singular_article . ' ' . $singular ) ); ?>
 				</h4>
-				<input type="text" placeholder="Enter a term or phrase">
+				<input type="text" placeholder="<?php esc_attr_e( 'Enter a term or phrase', 'post-finder' ); ?>">
 				<button class="button"><?php esc_html_e( 'Search', 'post-finder' ); ?></button>
 				<ul class="results"></ul>
 			</div><!-- ./search -->
@@ -349,29 +349,29 @@ class NS_Post_Finder {
 
 					foreach ( $posts as $post ) {
 						printf(
-							'<li data-id="%s">' .
-							'<input type="text" size="3" maxlength="3" max="3" value="%s">' .
-							'<span>%s</span>' .
-							'<nav>' .
-							'<a href="%s" class="edit" target="_blank" title="Edit">%s</a>' .
-							'<a href="%s" class="view" target="_blank" title="View">%s</a>' .
-							'<a href="#" class="delete" title="Remove">%s</a>' .
-							'</nav>' .
+							'<li data-id="%1$s">' .
+								'<input type="text" size="3" maxlength="3" max="3" value="%2$s">' .
+								'<span>%3$s</span>' .
+								'<nav>' .
+									'<a href="%4$s" class="edit" target="_blank" title="%5$s">%5$s</a>' .
+									'<a href="%6$s" class="view" target="_blank" title="%7$s">%7$s</a>' .
+									'<a href="#" class="delete" title="%8$s">%8$s</a>' .
+								'</nav>' .
 							'</li>',
-							intval( $post->ID ),
-							intval( $i ),
-							esc_html( apply_filters( 'post_finder_item_label', $post->post_title, $post ) ),
-							esc_url( get_edit_post_link( $post->ID ) ),
-							esc_html__( 'Edit', 'post-finder' ),
-							esc_url( get_permalink( $post->ID ) ),
-							esc_html__( 'View', 'post-finder' ),
-							esc_html__( 'Remove', 'post-finder' )
+							/* 1 */ intval( $post->ID ),
+							/* 2 */ intval( $i ),
+							/* 3 */ esc_html( apply_filters( 'post_finder_item_label', $post->post_title, $post ) ),
+							/* 4 */ esc_url( get_edit_post_link( $post->ID ) ),
+							/* 5 */ esc_html__( 'Edit', 'post-finder' ),
+							/* 6 */ esc_url( get_permalink( $post->ID ) ),
+							/* 7 */ esc_html__( 'View', 'post-finder' ),
+							/* 8 */ esc_html__( 'Remove', 'post-finder' )
 						);
 
 						$i++;
 					}
 				} else {
-					echo '<p class="notice">' . esc_html__( sprintf( 'No %s added', $plural ), 'post-finder' ) . '</p>';
+					echo '<p class="notice">' . esc_html( sprintf( __( 'No %s added', 'post-finder' ), $plural ) ) . '</p>';
 				}
 				?>
 			</ul>
