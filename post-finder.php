@@ -12,11 +12,13 @@ define( 'POST_FINDER_URL',     plugin_dir_url( __FILE__ ) );
 define( 'POST_FINDER_PATH',    dirname( __FILE__ ) . '/' );
 define( 'POST_FINDER_INC',     POST_FINDER_PATH . 'includes/' );
 
+// Load helper functions
+require_once POST_FINDER_INC . 'functions/helpers.php';
+
 // Don't load things again if this plugin was already included elsewhere
 if ( ! class_exists( 'NS_Post_Finder' ) ) {
 	// Include files
 	require_once POST_FINDER_INC . 'classes/NS_Post_Finder.php';
-	require_once POST_FINDER_INC . 'functions/helpers.php';
 
 	// Init
 	$post_finder = new NS_Post_Finder();
