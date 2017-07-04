@@ -243,19 +243,22 @@ class NS_Post_Finder {
 			'suppress_filters' => false,
 		) );
 
-		// now that we have a post type, figure out the proper label
+		// now that we have a post type, figure out the proper labels
 		if ( is_array( $args['post_type'] ) ) {
-			$singular         = 'Item';
-			$plural           = 'Items';
-			$singular_article = 'an';
-		} elseif ( $post_type = get_post_type_object( $args['post_type'] ) ) {
-			$singular         = $post_type->labels->singular_name;
-			$plural           = $post_type->labels->name;
-			$singular_article = 'a';
+			$select_message = __( 'Select a Recent Item', 'post-finder' );
+			$choose_message = __( 'Choose an Item', 'post-finder' );
+			$search_message = __( 'Search for an Item', 'post-finder' );
+			$noadded_message = __( 'No Items Added', 'post-finder' );
+		} elseif ( ( $post_type = get_post_type_object( $args['post_type'] ) ) ) {
+			$select_message = sprintf( _x( 'Select a Recent %s', 'Select a Recent {Type}', 'post-finder' ), $post_type->labels->singular_name );
+			$choose_message = sprintf( _x( 'Choose %s', 'Choose {a post}', 'post-finder' ), $post_type->labels->singular_name );
+			$search_message = sprintf( _x( 'Search for %s', 'Search for {Post}', 'post-finder' ), $post_type->labels->singular_name );
+			$noadded_message = sprintf( _x( 'No %s Added', 'No {Posts} Added', 'post-finder' ), $post_type->labels->name );
 		} else {
-			$singular         = 'Post';
-			$plural           = 'Posts';
-			$singular_article = 'a';
+			$select_message = __( 'Select a Recent Post', 'post-finder' );
+			$choose_message = __( 'Choose a Post', 'post-finder' );
+			$search_message = __( 'Search for a Post', 'post-finder' );
+			$noadded_message = __( 'No Posts Added', 'post-finder' );
 		}
 
 		// get current selected posts if we have a value
@@ -304,12 +307,12 @@ class NS_Post_Finder {
 
 				<h4>
 					<label for="post-finder-recent">
-						<?php echo esc_html( sprintf( __( 'Select a Recent %s', 'post-finder' ), $singular ) ); ?>
+						<?php echo esc_html( $select_message ); ?>
 					</label>
 				</h4>
 				<select name="post-finder-recent" id="post-finder-recent">
 					<option value="0">
-						<?php echo esc_html( sprintf( __( 'Choose %s', 'post-finder' ), $singular_article . ' ' . $singular ) ); ?>
+						<?php echo esc_html( $choose_message ); ?>
 					</option>
 
 					<?php foreach ( $recent_posts as $post ) : ?>
@@ -333,7 +336,7 @@ class NS_Post_Finder {
 
 			<div class="search">
 				<h4>
-					<?php echo esc_html( sprintf( __( 'Search for %s', 'post-finder' ), $singular_article . ' ' . $singular ) ); ?>
+					<?php echo esc_html( $search_message ); ?>
 				</h4>
 				<input type="text" placeholder="<?php esc_attr_e( 'Enter a term or phrase', 'post-finder' ); ?>">
 				<button class="button"><?php esc_html_e( 'Search', 'post-finder' ); ?></button>
@@ -371,7 +374,7 @@ class NS_Post_Finder {
 						$i++;
 					}
 				} else {
-					echo '<p class="notice">' . esc_html( sprintf( __( 'No %s added', 'post-finder' ), $plural ) ) . '</p>';
+					echo '<p class="notice">' . esc_html( $noadded_message ) . '</p>';
 				}
 				?>
 			</ul>
