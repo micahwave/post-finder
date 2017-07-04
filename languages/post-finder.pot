@@ -1,38 +1,112 @@
 # Copyright (C) 2017 Micah Ernst
 # This file is distributed under the same license as the Post Finder package.
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Post Finder 0.2\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/post-finder\n"
-"POT-Creation-Date: 2017-06-23 22:59:38+00:00\n"
+"Project-Id-Version: Post Finder 0.3.0\n"
+"POT-Creation-Date: 2017-07-04 12:34+0300\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"X-Generator: grunt-wp-i18n 0.4.9\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.0.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_n:1;_x:1,2c;_ex:1,2c;_nx:1,2,4c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:1,2,3c\n"
+"X-Poedit-SearchPath-0: ./includes\n"
 
-#: post-finder.php:70
+#: includes/classes/NS_Post_Finder.php:72
 msgid "Nothing Found"
 msgstr ""
 
-#: post-finder.php:71
+#: includes/classes/NS_Post_Finder.php:73
 msgid "Sorry, maximum number of items added."
 msgstr ""
 
-#: post-finder.php:72
+#: includes/classes/NS_Post_Finder.php:74
 msgid "Sorry, that item has already been added."
 msgstr ""
 
-#. Plugin Name of the plugin/theme
-msgid "Post Finder"
+#: includes/classes/NS_Post_Finder.php:142
+#: includes/classes/NS_Post_Finder.php:382
+msgid "Edit"
 msgstr ""
 
-#. Description of the plugin/theme
-msgid "Adds a UI for currating and ordering posts"
+#: includes/classes/NS_Post_Finder.php:143
+#: includes/classes/NS_Post_Finder.php:384
+msgid "View"
 msgstr ""
 
-#. Author of the plugin/theme
-msgid "Micah Ernst"
+#: includes/classes/NS_Post_Finder.php:144
+#: includes/classes/NS_Post_Finder.php:385
+msgid "Remove"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:150
+msgid "Add"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:262
+msgid "Select a Recent Item"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:263
+msgid "Choose an Item"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:264
+msgid "Search for an Item"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:265
+msgid "No Items Added"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:267
+#, php-format
+msgctxt "Select a Recent {Type}"
+msgid "Select a Recent %s"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:268
+#, php-format
+msgctxt "Choose {Post}"
+msgid "Choose %s"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:269
+#, php-format
+msgctxt "Search for {Post}"
+msgid "Search for %s"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:270
+#, php-format
+msgctxt "No {Posts} Added"
+msgid "No %s Added"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:272
+msgid "Select a Recent Post"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:273
+msgid "Choose a Post"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:274
+msgid "Search for a Post"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:275
+msgid "No Posts Added"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:355
+msgid "Enter a term or phrase"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:356
+msgid "Search"
 msgstr ""

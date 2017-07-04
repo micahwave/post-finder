@@ -265,7 +265,7 @@ class NS_Post_Finder {
 			$noadded_message = __( 'No Items Added', 'post-finder' );
 		} elseif ( ( $post_type = get_post_type_object( $args['post_type'] ) ) ) {
 			$select_message = sprintf( _x( 'Select a Recent %s', 'Select a Recent {Type}', 'post-finder' ), $post_type->labels->singular_name );
-			$choose_message = sprintf( _x( 'Choose %s', 'Choose {a post}', 'post-finder' ), $post_type->labels->singular_name );
+			$choose_message = sprintf( _x( 'Choose %s', 'Choose {Post}', 'post-finder' ), $post_type->labels->singular_name );
 			$search_message = sprintf( _x( 'Search for %s', 'Search for {Post}', 'post-finder' ), $post_type->labels->singular_name );
 			$noadded_message = sprintf( _x( 'No %s Added', 'No {Posts} Added', 'post-finder' ), $post_type->labels->name );
 		} else {
