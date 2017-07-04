@@ -1,30 +1,30 @@
 {
-    "name": "10up/post-finder",
-    "description": "Adds a UI for curating and ordering posts",
+	"name": "10up/post-finder",
+	"description": "Adds a UI for curating and ordering posts",
 	"version": "0.3.0",
-    "type": "wordpress-plugin",
+	"type": "wordpress-plugin",
 	"keywords": [
 		"wordpress"
 	],
 	"homepage": "https://github.com/10up/post-finder",
 	"license": "GPL-2.0",
-    "authors": [
-        {
-            "name": "10up",
-            "homepage": "http://10up.com/"
-        },
-        {
-            "name": "Micah Ernst",
-            "homepage": "https://github.com/micahwave/"
-        }
-    ],
+	"authors": [
+		{
+			"name": "10up",
+			"homepage": "http://10up.com/"
+		},
+		{
+			"name": "Micah Ernst",
+			"homepage": "https://github.com/micahwave/"
+		}
+	],
 	"support": {
 		"issues": "https://github.com/10up/post-finder/issues",
 		"source": "https://github.com/10up/post-finder"
 	},
-    "require": {
-        "composer/installers": "~1.0"
-    },
+	"require": {
+		"composer/installers": "~1.0"
+	},
 	"autoload": {
 		"files": [
 			"post-finder.php"
