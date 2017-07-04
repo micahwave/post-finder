@@ -14,5 +14,10 @@
     ],
     "require": {
         "composer/installers": "~1.0"
-    }
+    },
+	"autoload": {
+		"files": [
+			"post-finder.php"
+		]
+	}
 }
