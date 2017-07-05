@@ -1,8 +1,8 @@
-# Copyright (C) 2017 Micah Ernst
+# Copyright (C) 2017 Micah Ernst, 10up
 # This file is distributed under the same license as the Post Finder package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Post Finder 0.2\n"
+"Project-Id-Version: Post Finder 0.3.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/post-finder\n"
 "POT-Creation-Date: 2017-06-23 22:59:38+00:00\n"
 "MIME-Version: 1.0\n"
@@ -13,16 +13,43 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: grunt-wp-i18n 0.4.9\n"
 
-#: post-finder.php:70
+#: includes/classes/NS_Post_Finder.php:58
 msgid "Nothing Found"
 msgstr ""
 
-#: post-finder.php:71
+#: includes/classes/NS_Post_Finder.php:59
 msgid "Sorry, maximum number of items added."
 msgstr ""
 
-#: post-finder.php:72
+#: includes/classes/NS_Post_Finder.php:60
 msgid "Sorry, that item has already been added."
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:61
+msgid "Next"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:129
+#: includes/classes/NS_Post_Finder.php:367
+msgid "Edit"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:130
+#: includes/classes/NS_Post_Finder.php:369
+msgid "View"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:131
+#: includes/classes/NS_Post_Finder.php:370
+msgid "Remove"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:137
+msgid "Add"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:340
+msgid "Search"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -30,9 +57,40 @@ msgid "Post Finder"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "Adds a UI for currating and ordering posts"
+msgid "Adds a UI for curating and ordering posts"
 msgstr ""
 
 #. Author of the plugin/theme
-msgid "Micah Ernst"
+msgid "Micah Ernst, 10up"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:249
+msgctxt "Singular item label"
+msgid "Item"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:250
+msgctxt "Plural item label"
+msgid "Items"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:251
+msgctxt "Singular article"
+msgid "an"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:255
+#: includes/classes/NS_Post_Finder.php:259
+msgctxt "Singular article"
+msgid "a"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:257
+msgctxt "Singular post type label"
+msgid "Post"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:258
+msgctxt "Plural post type label"
+msgid "Posts"
 msgstr ""
