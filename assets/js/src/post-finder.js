@@ -1,6 +1,6 @@
 'use strict';
 
-/* global POST_FINDER_CONFIG, ajaxurl, _ */
+/* global POST_FINDER_CONFIG, pfPerPage, ajaxurl, _ */
 
 ( function( window, $, _, undefined ) {
 
@@ -65,14 +65,14 @@
 			// bind search button
 			plugin.$search.on( 'click', '.button', function( e ) {
 				e.preventDefault();
-				plugin.search();
+				plugin.search( e );
 			} );
 
 			// search on enter key press
 			plugin.$search.on( 'keypress', 'input[type="text"]', function( e ) {
 				if ( e.which === 13 ) {
 					e.preventDefault();
-					plugin.search();
+					plugin.search( e );
 				}
 			} );
 
@@ -211,14 +211,19 @@
 			}
 		};
 
-		plugin.search = function() {
+		plugin.search = function( e ) {
 
 			var html = '',
+				page = e.currentTarget.getAttribute( 'data-page' ) ?
+					Number( e.currentTarget.getAttribute( 'data-page' ) ) :
+					1,
 				data = {
 					action: 'pf_search_posts',
 					s: plugin.$query.val(),
+					page: page,
 					_ajax_nonce: plugin.nonce
 				},
+				nextPage = page + 1,
 				template = _.template( itemTemplate );
 
 			// merge the default args in
@@ -232,19 +237,33 @@
 				{
 					type: 'POST',
 					data: data,
+					dataType: 'json',
 					success: function( response ) {
 						if ( typeof response.posts !== 'undefined' ) {
 							if ( response.posts.length > 0 ) {
 								for ( var i in response.posts ) {
 									html += template( response.posts[ i ] );
 								}
+
+								// If the # of results equals our per page setting (default 10), show the Next button
+								if ( response.posts.length === pfPerPage ) {
+									html += '<li class="next">';
+									html += '<a href="#" class="button" data-page="' + nextPage + '">';
+									html += POST_FINDER_CONFIG.next;
+									html += '</a>';
+									html += '</li>';
+								}
 							} else {
 								html = '<li>' + POST_FINDER_CONFIG.nothing_found + '</li>';
 							}
+
+							// Hide Loader
+							plugin.$search.removeClass( 'loading' );
+
+							// Show results
 							plugin.$results.html( html );
 						}
-					},
-					dataType: 'json'
+					}
 				}
 			);
 		};

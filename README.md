@@ -18,7 +18,9 @@ In your theme, you can call `pf_render( $name, $value, $options )` where you wan
 
 **Current options**
 * `show_numbers` - Whether to show a positional number next to each item. Makes it easy to see which position each item has. Default true.
+* `show_recent` - Whether to show the Recent Post select input. Default true.
 * `limit` - Limit how many items can be selected. Default 10.
+* `args` - Array of arguments passed to our `WP_Query` instances. Allows customizations of these queries, like setting a specific post type. See the [WordPress Developer Reference](https://developer.wordpress.org/reference/classes/wp_query/#methods-and-properties) for supported arguments.
 * `include_script` - Whether to include the init script for the input. Default true. If false, you'll have to include this yourself in order for it to work.
 ```
 jQuery( document ).ready( function( $ ) {

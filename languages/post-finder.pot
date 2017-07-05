@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Micah Ernst
+# Copyright (C) 2017 Micah Ernst, 10up
 # This file is distributed under the same license as the Post Finder package.
 #, fuzzy
 msgid ""
@@ -26,6 +26,33 @@ msgstr ""
 
 #: includes/classes/NS_Post_Finder.php:74
 msgid "Sorry, that item has already been added."
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:61
+msgid "Next"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:129
+#: includes/classes/NS_Post_Finder.php:367
+msgid "Edit"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:130
+#: includes/classes/NS_Post_Finder.php:369
+msgid "View"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:131
+#: includes/classes/NS_Post_Finder.php:370
+msgid "Remove"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:137
+msgid "Add"
+msgstr ""
+
+#: includes/classes/NS_Post_Finder.php:340
+msgid "Search"
 msgstr ""
 
 #: includes/classes/NS_Post_Finder.php:142
