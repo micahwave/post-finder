@@ -220,6 +220,7 @@ class NS_Post_Finder {
 	public static function render( $name, $value, $options = array() ) {
 		$options = wp_parse_args( $options, array(
 			'show_numbers'   => true, // display # next to post
+			'show_recent'    => true, // display the Recent Post input
 			'limit'          => 10,
 			'include_script' => true, // Should the <script> tags to init post finder be included or not
 		) );
@@ -283,14 +284,24 @@ class NS_Post_Finder {
 			$args['post__not_in'] = $post_ids;
 		}
 
-		/**
-		 * Filters the recent post args.
-		 *
-		 * @since 0.1.0
-		 *
-		 * @param array $args Current args.
-		 */
-		$recent_posts = get_posts( apply_filters( 'post_finder_' . $name . '_recent_post_args', $args ) );
+		// Get recent posts, if that option is enabled
+		if ( $options['show_recent'] ) {
+			/**
+			 * Filters the recent post args.
+			 *
+			 * @since 0.1.0
+			 *
+			 * @param array $args Current args.
+			 */
+			$recent_posts_args = apply_filters( 'post_finder_' . $name . '_recent_post_args', $args );
+
+			$recent_posts = new WP_Query( $recent_posts_args );
+			$recent_posts = $recent_posts->have_posts() ? $recent_posts->posts : array();
+
+			wp_reset_postdata();
+		} else {
+			$recent_posts = '';
+		}
 
 		$class = 'post-finder';
 
