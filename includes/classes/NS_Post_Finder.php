@@ -8,16 +8,11 @@
 class NS_Post_Finder {
 
 	/**
-	 * Constructor.
-	 */
-	function __construct() {
-	}
-
-	/**
 	 * Run needed hooks.
 	 *
 	 * @since 0.3.0
 	 *
+	 * @access public
 	 * @return void
 	 */
 	public function init() {
@@ -46,14 +41,17 @@ class NS_Post_Finder {
 	 *
 	 * @since 0.1.0
 	 *
+	 * @access public
+	 * @action admin_enqueue_scripts
 	 * @return void
 	 */
 	public function scripts() {
+		$baseurl = trailingslashit( POST_FINDER_URL );
 		$post_fix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 		wp_enqueue_script(
 			'post-finder',
-			POST_FINDER_URL . "assets/js/post-finder$post_fix.js",
+			"{$baseurl}assets/js/post-finder{$post_fix}.js",
 			array(
 				'jquery',
 				'jquery-ui-draggable',
@@ -78,7 +76,7 @@ class NS_Post_Finder {
 
 		wp_enqueue_style(
 			'post-finder',
-			POST_FINDER_URL . "assets/css/post-finder$post_fix.css",
+			"{$baseurl}assets/css/post-finder{$post_fix}.css",
 			array(),
 			POST_FINDER_VERSION
 		);
@@ -89,12 +87,14 @@ class NS_Post_Finder {
 	 *
 	 * @since 0.1.0
 	 *
+	 * @access public
+	 * @action admin_footer
+	 * @action customize_controls_print_footer_scripts
 	 * @return void
 	 */
 	public function admin_footer() {
 		wp_nonce_field( 'post_finder', 'post_finder_nonce' );
-
-		$this->render_js_templates();
+		$this->_render_js_templates();
 	}
 
 	/**
@@ -106,6 +106,7 @@ class NS_Post_Finder {
 	 *
 	 * @since 0.1.0
 	 *
+	 * @access public
 	 * @param string $string Content to run through kses.
 	 * @param array $allowed_html Allowed HTML elements.
 	 * @param array $allowed_protocols Allowed protocol in links.
@@ -132,9 +133,10 @@ class NS_Post_Finder {
 	 *
 	 * @since 0.1.0
 	 *
+	 * @access private
 	 * @return void
 	 */
-	private function render_js_templates() {
+	private function _render_js_templates() {
 		$main_template =
 			'<li data-id="<%= id %>">
 				<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">
@@ -200,9 +202,8 @@ class NS_Post_Finder {
 		 * @param array $allowed_html Array of allowed HTML.
 		 */
 		$allowed_html = apply_filters( 'post_finder_allowed_html', $allowed_html );
-	?>
 
-		<script type="text/html" id="tmpl-post-finder-main">
+		?><script type="text/html" id="tmpl-post-finder-main">
 			<?php
 			// @codingStandardsIgnoreStart
 			// Ignoring because this output is filtered in underscores_safe_kses()
@@ -216,9 +217,7 @@ class NS_Post_Finder {
 			// Ignoring because this output is filtered in underscores_safe_kses()
 			echo $this->underscores_safe_kses( $item_template, $allowed_html );
 			// @codingStandardsIgnoreEnd ?>
-		</script>
-
-	<?php
+		</script><?php
 	}
 
 	/**
@@ -226,6 +225,8 @@ class NS_Post_Finder {
 	 *
 	 * @since 0.1.0
 	 *
+	 * @static
+	 * @access public
 	 * @param string $name Name of input
 	 * @param string $value Expecting comma separated post ids
 	 * @param array $options Field options
@@ -325,9 +326,8 @@ class NS_Post_Finder {
 		if ( ! $options['show_numbers'] ) {
 			$class .= ' no-numbers';
 		}
-	?>
 
-		<div class="<?php echo esc_attr( $class ); ?>" data-limit="<?php echo intval( $options['limit'] ); ?>" data-args='<?php echo wp_json_encode( $args ); ?>'>
+		?><div class="<?php echo esc_attr( $class ); ?>" data-limit="<?php echo intval( $options['limit'] ); ?>" data-args='<?php echo wp_json_encode( $args ); ?>'>
 
 			<?php if ( $recent_posts ) : ?>
 
@@ -430,9 +430,11 @@ class NS_Post_Finder {
 	 *
 	 * @since 0.1.0
 	 *
+	 * @access public
+	 * @action wp_ajax_pf_search_posts
 	 * @return void
 	 */
-	function search_posts() {
+	public function search_posts() {
 		check_ajax_referer( 'post_finder' );
 
 		if ( ! current_user_can( 'edit_posts' ) ) {
