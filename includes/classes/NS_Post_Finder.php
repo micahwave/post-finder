@@ -21,10 +21,24 @@ class NS_Post_Finder {
 	 * @return void
 	 */
 	public function init() {
+		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
 		add_action( 'admin_footer', array( $this, 'admin_footer' ) );
 		add_action( 'customize_controls_print_footer_scripts', array( $this, 'admin_footer' ) );
 		add_action( 'wp_ajax_pf_search_posts', array( $this, 'search_posts' ) );
+	}
+
+	/**
+	 * Loads post-finder text domain.
+	 *
+	 * @since 0.3.0
+	 * @uses load_plugin_textdomain
+	 *
+	 * @access public
+	 * @action plugins_loaded
+	 */
+	public function load_textdomain() {
+		load_plugin_textdomain( 'post-finder', false, basename( POST_FINDER_PATH ) . '/languages' );
 	}
 
 	/**
@@ -126,9 +140,9 @@ class NS_Post_Finder {
 				<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">
 				<span><%= title %></span>
 				<nav>
-					<a href="<%= editUrl %>" class="edit" target="_blank" title="Edit">' . esc_html__( 'Edit', 'post-finder' ) . '</a>
-					<a href="<%= permalink %>" class="view" target="_blank" title="View">' . esc_html__( 'View', 'post-finder' ) . '</a>
-					<a href="#" class="delete" title="Remove">' . esc_html__( 'Remove', 'post-finder' ) . '</a>
+					<a href="<%= editUrl %>" class="edit" target="_blank" title="' . esc_attr__( 'Edit', 'post-finder' ) . '">' . esc_html__( 'Edit', 'post-finder' ) . '</a>
+					<a href="<%= permalink %>" class="view" target="_blank" title="' . esc_attr__( 'View', 'post-finder' ) . '">' . esc_html__( 'View', 'post-finder' ) . '</a>
+					<a href="#" class="delete" title="' . esc_attr__( 'Remove', 'post-finder' ) . '">' . esc_html__( 'Remove', 'post-finder' ) . '</a>
 				</nav>
 			</li>';
 
@@ -245,19 +259,22 @@ class NS_Post_Finder {
 			'suppress_filters' => false,
 		) );
 
-		// now that we have a post type, figure out the proper label
+		// now that we have a post type, figure out the proper labels
 		if ( is_array( $args['post_type'] ) ) {
-			$singular         = esc_html_x( 'Item', 'Singular item label', 'post-finder' );
-			$plural           = esc_html_x( 'Items', 'Plural item label', 'post-finder' );
-			$singular_article = esc_html_x( 'an', 'Singular article', 'post-finder' );
-		} elseif ( $post_type = get_post_type_object( $args['post_type'] ) ) {
-			$singular         = $post_type->labels->singular_name;
-			$plural           = $post_type->labels->name;
-			$singular_article = esc_html_x( 'a', 'Singular article', 'post-finder' );
+			$select_message = __( 'Select a Recent Item', 'post-finder' );
+			$choose_message = __( 'Choose an Item', 'post-finder' );
+			$search_message = __( 'Search for an Item', 'post-finder' );
+			$noadded_message = __( 'No Items Added', 'post-finder' );
+		} elseif ( ( $post_type = get_post_type_object( $args['post_type'] ) ) ) {
+			$select_message = sprintf( _x( 'Select a Recent %s', 'Select a Recent {Type}', 'post-finder' ), $post_type->labels->singular_name );
+			$choose_message = sprintf( _x( 'Choose %s', 'Choose {Post}', 'post-finder' ), $post_type->labels->singular_name );
+			$search_message = sprintf( _x( 'Search for %s', 'Search for {Post}', 'post-finder' ), $post_type->labels->singular_name );
+			$noadded_message = sprintf( _x( 'No %s Added', 'No {Posts} Added', 'post-finder' ), $post_type->labels->name );
 		} else {
-			$singular         = esc_html_x( 'Post', 'Singular post type label', 'post-finder' );
-			$plural           = esc_html_x( 'Posts', 'Plural post type label', 'post-finder' );
-			$singular_article = esc_html_x( 'a', 'Singular article', 'post-finder' );
+			$select_message = __( 'Select a Recent Post', 'post-finder' );
+			$choose_message = __( 'Choose a Post', 'post-finder' );
+			$search_message = __( 'Search for a Post', 'post-finder' );
+			$noadded_message = __( 'No Posts Added', 'post-finder' );
 		}
 
 		// get current selected posts if we have a value
@@ -316,12 +333,12 @@ class NS_Post_Finder {
 
 				<h4>
 					<label for="post-finder-recent">
-						<?php esc_html_e( sprintf( 'Select a Recent %s', $singular ), 'post-finder' ); ?>
+						<?php echo esc_html( $select_message ); ?>
 					</label>
 				</h4>
 				<select name="post-finder-recent" id="post-finder-recent">
 					<option value="0">
-						<?php esc_html_e( sprintf( 'Choose %s', $singular_article . ' ' . $singular ), 'post-finder' ); ?>
+						<?php echo esc_html( $choose_message ); ?>
 					</option>
 
 					<?php foreach ( $recent_posts as $post ) : ?>
@@ -345,9 +362,9 @@ class NS_Post_Finder {
 
 			<div class="search">
 				<h4>
-					<?php esc_html_e( sprintf( 'Search for %s', $singular_article . ' ' . $singular ), 'post-finder' ); ?>
+					<?php echo esc_html( $search_message ); ?>
 				</h4>
-				<input type="text" placeholder="Enter a term or phrase">
+				<input type="text" placeholder="<?php esc_attr_e( 'Enter a term or phrase', 'post-finder' ); ?>">
 				<button class="button"><?php esc_html_e( 'Search', 'post-finder' ); ?></button>
 				<div class="loader"></div>
 				<ul class="results"></ul>
@@ -362,29 +379,29 @@ class NS_Post_Finder {
 
 					foreach ( $posts as $post ) {
 						printf(
-							'<li data-id="%s">' .
-							'<input type="text" size="3" maxlength="3" max="3" value="%s">' .
-							'<span>%s</span>' .
-							'<nav>' .
-							'<a href="%s" class="edit" target="_blank" title="Edit">%s</a>' .
-							'<a href="%s" class="view" target="_blank" title="View">%s</a>' .
-							'<a href="#" class="delete" title="Remove">%s</a>' .
-							'</nav>' .
+							'<li data-id="%1$s">' .
+								'<input type="text" size="3" maxlength="3" max="3" value="%2$s">' .
+								'<span>%3$s</span>' .
+								'<nav>' .
+									'<a href="%4$s" class="edit" target="_blank" title="%5$s">%5$s</a>' .
+									'<a href="%6$s" class="view" target="_blank" title="%7$s">%7$s</a>' .
+									'<a href="#" class="delete" title="%8$s">%8$s</a>' .
+								'</nav>' .
 							'</li>',
-							intval( $post->ID ),
-							intval( $i ),
-							esc_html( apply_filters( 'post_finder_item_label', $post->post_title, $post ) ),
-							esc_url( get_edit_post_link( $post->ID ) ),
-							esc_html__( 'Edit', 'post-finder' ),
-							esc_url( get_permalink( $post->ID ) ),
-							esc_html__( 'View', 'post-finder' ),
-							esc_html__( 'Remove', 'post-finder' )
+							/* 1 */ intval( $post->ID ),
+							/* 2 */ intval( $i ),
+							/* 3 */ esc_html( apply_filters( 'post_finder_item_label', $post->post_title, $post ) ),
+							/* 4 */ esc_url( get_edit_post_link( $post->ID ) ),
+							/* 5 */ esc_html__( 'Edit', 'post-finder' ),
+							/* 6 */ esc_url( get_permalink( $post->ID ) ),
+							/* 7 */ esc_html__( 'View', 'post-finder' ),
+							/* 8 */ esc_html__( 'Remove', 'post-finder' )
 						);
 
 						$i++;
 					}
 				} else {
-					echo '<p class="notice">' . esc_html__( sprintf( 'No %s added', $plural ), 'post-finder' ) . '</p>';
+					echo '<p class="notice">' . esc_html( $noadded_message ) . '</p>';
 				}
 				?>
 			</ul>
