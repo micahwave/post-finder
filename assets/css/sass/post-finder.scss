@@ -95,9 +95,12 @@
 	}
 
 	.search {
-
 		background: none;
 		font-size: 14px;
+
+		.loader {
+			display: none;
+		}
 
 		input {
 			width: 100%;
@@ -108,6 +111,24 @@
 
 		.button {
 			margin-top: 1px;
+		}
+	}
+
+	.loading {
+		.loader {
+			display: block;
+			width: 40px;
+			height: 40px;
+			margin: 20px auto;
+			background-color: #333;
+
+			border-radius: 100%;
+			-webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+			animation: sk-scaleout 1.0s infinite ease-in-out;
+		}
+
+		.results {
+			display: none;
 		}
 	}
 
@@ -130,4 +151,23 @@
 			text-decoration: none;
 		}
 	}
+}
+
+@-webkit-keyframes sk-scaleout {
+	0% { -webkit-transform: scale(0) }
+	100% {
+		-webkit-transform: scale(1.0);
+		opacity: 0;
+	}
+}
+
+@keyframes sk-scaleout {
+	0% {
+		-webkit-transform: scale(0);
+		transform: scale(0);
+	} 100% {
+			-webkit-transform: scale(1.0);
+			transform: scale(1.0);
+			opacity: 0;
+		}
 }

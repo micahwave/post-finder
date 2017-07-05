@@ -39,7 +39,7 @@
     "init-declarations": [0],
     "keyword-spacing": [2],
     "max-depth": [2, 6],
-    "max-len": [2, 100, 4],
+    "max-len": [2, 120, 4],
     "max-nested-callbacks": [0],
     "max-params": [2, 4],
     "max-statements": [0],

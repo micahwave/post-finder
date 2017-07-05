@@ -55,7 +55,8 @@ class NS_Post_Finder {
 				'adminurl'           => admin_url(),
 				'nothing_found'      => esc_html__( 'Nothing Found', 'post_finder' ),
 				'max_number_allowed' => esc_html__( 'Sorry, maximum number of items added.', 'post_finder' ),
-				'already_added'      => esc_html__( 'Sorry, that item has already been added.', 'post_finder' )
+				'already_added'      => esc_html__( 'Sorry, that item has already been added.', 'post_finder' ),
+				'next'               => esc_html__( 'Next', 'post_finder' ),
 			)
 		);
 
@@ -220,6 +221,7 @@ class NS_Post_Finder {
 	public static function render( $name, $value, $options = array() ) {
 		$options = wp_parse_args( $options, array(
 			'show_numbers'   => true, // display # next to post
+			'show_recent'    => true, // display the Recent Post input
 			'limit'          => 10,
 			'include_script' => true, // Should the <script> tags to init post finder be included or not
 		) );
@@ -246,17 +248,17 @@ class NS_Post_Finder {
 
 		// now that we have a post type, figure out the proper label
 		if ( is_array( $args['post_type'] ) ) {
-			$singular         = 'Item';
-			$plural           = 'Items';
-			$singular_article = 'an';
+			$singular         = esc_html_x( 'Item', 'Singular item label', 'post-finder' );
+			$plural           = esc_html_x( 'Items', 'Plural item label', 'post-finder' );
+			$singular_article = esc_html_x( 'an', 'Singular article', 'post-finder' );
 		} elseif ( $post_type = get_post_type_object( $args['post_type'] ) ) {
 			$singular         = $post_type->labels->singular_name;
 			$plural           = $post_type->labels->name;
-			$singular_article = 'a';
+			$singular_article = esc_html_x( 'a', 'Singular article', 'post-finder' );
 		} else {
-			$singular         = 'Post';
-			$plural           = 'Posts';
-			$singular_article = 'a';
+			$singular         = esc_html_x( 'Post', 'Singular post type label', 'post-finder' );
+			$plural           = esc_html_x( 'Posts', 'Plural post type label', 'post-finder' );
+			$singular_article = esc_html_x( 'a', 'Singular article', 'post-finder' );
 		}
 
 		// get current selected posts if we have a value
@@ -283,14 +285,24 @@ class NS_Post_Finder {
 			$args['post__not_in'] = $post_ids;
 		}
 
-		/**
-		 * Filters the recent post args.
-		 *
-		 * @since 0.1.0
-		 *
-		 * @param array $args Current args.
-		 */
-		$recent_posts = get_posts( apply_filters( 'post_finder_' . $name . '_recent_post_args', $args ) );
+		// Get recent posts, if that option is enabled
+		if ( $options['show_recent'] ) {
+			/**
+			 * Filters the recent post args.
+			 *
+			 * @since 0.1.0
+			 *
+			 * @param array $args Current args.
+			 */
+			$recent_posts_args = apply_filters( 'post_finder_' . $name . '_recent_post_args', $args );
+
+			$recent_posts = new WP_Query( $recent_posts_args );
+			$recent_posts = $recent_posts->have_posts() ? $recent_posts->posts : array();
+
+			wp_reset_postdata();
+		} else {
+			$recent_posts = '';
+		}
 
 		$class = 'post-finder';
 
@@ -337,6 +349,7 @@ class NS_Post_Finder {
 				</h4>
 				<input type="text" placeholder="Enter a term or phrase">
 				<button class="button"><?php esc_html_e( 'Search', 'post-finder' ); ?></button>
+				<div class="loader"></div>
 				<ul class="results"></ul>
 			</div><!-- ./search -->
 
@@ -378,11 +391,20 @@ class NS_Post_Finder {
 		</div><!-- /.post-finder -->
 
 		<?php if ( $options['include_script'] ) : ?>
+
 			<script type="text/javascript">
+				var pfPerPage = <?php echo absint( $args['posts_per_page'] ); ?>;
 				jQuery( document ).ready( function( $ ) {
 					$( '.post-finder' ).postFinder();
 				} );
 			</script>
+
+		<?php else : ?>
+
+			<script type="text/javascript">
+				var pfPerPage = <?php echo absint( $args['posts_per_page'] ); ?>;
+			</script>
+
 		<?php endif;
 	}
 
@@ -405,6 +427,7 @@ class NS_Post_Finder {
 		// possible vars we'll accept
 		$vars = array(
 			's',
+			'page',
 			'post_parent',
 			'post_status',
 		);
@@ -419,6 +442,16 @@ class NS_Post_Finder {
 				} else {
 					$args[ $var ] = sanitize_text_field( $_POST[ $var ] );
 				}
+			}
+		}
+
+		// Make sure our page value is above 1
+		if ( isset( $_POST['page'] ) ) {
+			unset( $args['page'] );
+			$paged = absint( $_POST['page'] );
+
+			if ( $paged > 1 ) {
+				$args['paged'] = $paged;
 			}
 		}
 
