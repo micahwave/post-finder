@@ -2,7 +2,7 @@
   "name": "post-finder",
   "title": "Post Finder",
   "description": "Adds a UI for curating and ordering posts",
-  "version": "0.2",
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": ""
