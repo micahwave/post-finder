@@ -6,6 +6,10 @@
  * Version: 0.3.0
  */
 
+ if ( ! defined( 'ABSPATH' ) ) {
+	return;
+}
+
 // Useful global constants
 define( 'POST_FINDER_VERSION', '0.3.0' );
 define( 'POST_FINDER_URL',     plugin_dir_url( __FILE__ ) );
