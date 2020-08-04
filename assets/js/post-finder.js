@@ -290,6 +290,12 @@
 				'idField': plugin.$field,
 				'typeField': plugin.$typefield
 			} );
+
+            // Fire custom event to listen for externally.
+            window.dispatchEvent( new CustomEvent( 'updatePostFinder', {
+                bubbles: false,
+                detail: { ids: ids }
+            } ) );
 		};
 
 		plugin.init();
