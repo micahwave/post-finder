@@ -11,7 +11,7 @@
 }
 
 // Useful global constants
-define( 'POST_FINDER_VERSION', '0.3.0' );
+define( 'POST_FINDER_VERSION', '0.4.0' );
 define( 'POST_FINDER_URL',     plugin_dir_url( __FILE__ ) );
 define( 'POST_FINDER_PATH',    dirname( __FILE__ ) . '/' );
 define( 'POST_FINDER_INC',     POST_FINDER_PATH . 'includes/' );

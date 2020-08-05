@@ -1,6 +1,6 @@
-/*! Post Finder - v0.2
+/*! Post Finder - v0.4.0
  * 
- * Copyright (c) 2017; */
+ * Copyright (c) 2020; */
 'use strict';
 
 /* global POST_FINDER_CONFIG, pfPerPage, ajaxurl, _ */
@@ -8,6 +8,27 @@
 ( function( window, $, _, undefined ) {
 
 	var cache = {};
+
+	if ( typeof window.CustomEvent !== 'function' ) {
+
+		/**
+		 * Custom Event Polyfill for IE11.
+		 * @see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill
+		 *
+		 * @param {CustomEvent} event CustomEvent object.
+		 * @param {Object} params CustomEvent parameters object.
+		 * @returns {CustomEvent} CustomEvent function.
+		 * @constructor
+		 */
+		window.CustomEvent = function( event, params ) {
+			params = params || {bubbles: false, cancelable: false, detail: null};
+			var evt = document.createEvent( 'CustomEvent' );
+
+			evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+			return evt;
+		};
+
+	}
 
 	$.postFinder = function( element, options ) {
 		var defaults, mainTemplate, itemTemplate, $li;
@@ -290,6 +311,12 @@
 				'idField': plugin.$field,
 				'typeField': plugin.$typefield
 			} );
+
+			window.dispatchEvent( new CustomEvent( 'updatePostFinder', {
+				bubbles: false,
+				detail: {ids: ids}
+			} ) );
+
 		};
 
 		plugin.init();
