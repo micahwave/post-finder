@@ -360,18 +360,6 @@ class NS_Post_Finder {
 
 			<?php endif; ?>
 
-			<div class="search">
-				<h4>
-					<?php echo esc_html( $search_message ); ?>
-				</h4>
-				<input type="text" placeholder="<?php esc_attr_e( 'Enter a term or phrase', 'post-finder' ); ?>">
-				<button class="button"><?php esc_html_e( 'Search', 'post-finder' ); ?></button>
-				<div class="loader"></div>
-				<ul class="results"></ul>
-			</div><!-- ./search -->
-
-			<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
-
 			<ul class="list">
 				<?php
 				if ( ! empty( $posts ) ) {
@@ -405,6 +393,18 @@ class NS_Post_Finder {
 				}
 				?>
 			</ul>
+
+			<div class="search">
+				<h4>
+					<?php echo esc_html( $search_message ); ?>
+				</h4>
+				<input type="text" placeholder="<?php esc_attr_e( 'Enter a term or phrase', 'post-finder' ); ?>">
+				<button class="button"><?php esc_html_e( 'Search', 'post-finder' ); ?></button>
+				<div class="loader"></div>
+				<ul class="results"></ul>
+			</div><!-- ./search -->
+
+			<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
 		</div><!-- /.post-finder -->
 
 		<?php if ( $options['include_script'] ) : ?>
