@@ -1,9 +1,15 @@
 <?php
 /**
- * Plugin Name: Post Finder
- * Author: Micah Ernst, 10up
- * Description: Adds a UI for curating and ordering posts
- * Version: 0.4.0
+ * Plugin Name:       Post Finder
+ * Plugin URI:        https://github.com/10up/post-finder
+ * Description:       Adds a UI for curating and ordering posts.
+ * Version:           0.4.0
+ * Requires at least: 
+ * Requires PHP:      
+ * Author:            Micah Ernst, 10up
+ * Author URI:        
+ * License:           GPLv2
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  */
 
  if ( ! defined( 'ABSPATH' ) ) {
