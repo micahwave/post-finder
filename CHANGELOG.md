@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 ## [0.4.0] - 2020-08-06
 ### Added
 - Added `CustomEvent` and associated IE11 polyfill to listen for changes outside of the plugin (props [@jaredrethman](https://github.com/jaredrethman) via [#32](https://github.com/10up/post-finder/pull/32))
+- Documentation updates (props [@jeffpaul](https://github.com/jeffpaul) via [#33](https://github.com/10up/post-finder/pull/33))
 
 ### Changed
 - Moved saved connections above the search field (props [@gthayer](https://github.com/gthayer) via [#30](https://github.com/10up/post-finder/pull/30))
