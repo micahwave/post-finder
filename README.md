@@ -2,7 +2,7 @@
 
 > Creates a rich input field that allows a user to curate and rank content items (posts or other custom post types)
 
-[![Support Level](https://img.shields.io/badge/support-stable-blue.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/post-finder.svg)](https://github.com/10up/post-finder/releases/latest) ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.4%20tested-success.svg) [![GPLv2 License](https://img.shields.io/github/license/10up/post-finder.svg)](https://github.com/10up/post-finder/blob/develop/LICENSE.md)
+[![Support Level](https://img.shields.io/badge/support-stable-blue.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/post-finder.svg)](https://github.com/10up/post-finder/releases/latest) ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.8%20tested-success.svg) [![GPLv2 License](https://img.shields.io/github/license/10up/post-finder.svg)](https://github.com/10up/post-finder/blob/develop/LICENSE.md)
 
 
 ## Installation
